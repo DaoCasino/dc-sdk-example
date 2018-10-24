@@ -1,4 +1,3 @@
-
 const template = `<div id="tutorial_app" class="show-step-0">
     <h1>Basic Dapp flow example </h1>
     <hr>

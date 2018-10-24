@@ -1,7 +1,7 @@
 /* global alert */
 
 import './tutorial.less'
-import template from './tutorial.tpl.js'
+import template from './tutorials.js'
 import { Game, Account } from 'dc-webapi'
 ;(async () => {
   window.acc = new Account()
@@ -86,9 +86,10 @@ export default new class View {
         return 'hui'
       }
       console.log(require('../dapp.logic.js'))
+      const contract = 'config/dapp.contract.json'
       window.game = new Game({
         name: process.env.DAPP_SLUG,
-        contract: require('config/dapp.contract.json'),
+        contract: contract,
         account: window.acc,
         gameLogicFunction: GameLogic,
         rules: {

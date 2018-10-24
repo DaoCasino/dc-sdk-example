@@ -1,6 +1,6 @@
 /* global DCLib */
 
-DCLib.defineDAppLogic(process.env.DAPP_SLUG, function (payChannel) {
+module.exports.defineDAppLogic(process.env.DAPP_SLUG, function (payChannel) {
   const MAX_RAND_NUM = 3
 
   let history = []
@@ -33,14 +33,14 @@ DCLib.defineDAppLogic(process.env.DAPP_SLUG, function (payChannel) {
     const rollItem = {
       // !IMPORTANT Time can be different on client and bankroller sides
       // not use time in your primary game logic
-      timestamp   : new Date().getTime(),
+      timestamp: new Date().getTime(),
 
-      user_bet    : userBet,
-      profit      : profit,
-      user_num    : userNum,
-      balance     : payChannel.getBalance(),
-      random_hash : random_hash,
-      random_num  : randomNum
+      user_bet: userBet,
+      profit: profit,
+      user_num: userNum,
+      balance: payChannel.getBalance(),
+      random_hash: random_hash,
+      random_num: randomNum
     }
     history.push(rollItem)
 
