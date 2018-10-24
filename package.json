@@ -15,7 +15,8 @@
     "orientation": "portrait"
   },
   "scripts": {
-    "start":"node ./scripts/devserver.js"
+    "start:local":"sh run.sh local ",
+    "dev":"node ./scripts/devserver.js"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",

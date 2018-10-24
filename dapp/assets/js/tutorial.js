@@ -80,15 +80,15 @@ export default new class View {
 
   showStep2 () {
     this.showStep(2)
-
+    console.log(dapp(['hui']))
     const btn = this.root.querySelector('.step-2 button')
     btn.onclick = async () => {
       btn.disabled = true
       window.game = new Game({
-        name: 'DCGame_ex_v1',
+        name: manifest.slug,
         contract: manifest.contract,
         account: window.acc,
-        gameLogicFunction: dapp,
+        gameLogicFunction: dapp.play,
         rules: {
           depositX: 2
         }
@@ -134,7 +134,7 @@ export default new class View {
   showStep4 (connection) {
     this.showStep(4)
 
-    const table = document.querySelector('.step-4 table.play-log tbody')
+    // const table = document.querySelector('.step-4 table.play-log tbody')
     let playCnt = 0
 
     const endBtn = this.root.querySelector('.step-4 button.next')
@@ -162,28 +162,28 @@ export default new class View {
       } catch (e) {
         console.error(e)
       }
-      const play = ''
+      // const play = ''
       // const play = await App.play(bet, choice)
       console.info('Play result:')
-      console.info(play)
-      console.table(play.bankroller.result)
+      // console.info(play)
+      // console.table(play.bankroller.result)
 
-      const r = play.bankroller.result
-      table.insertAdjacentHTML(
-        'beforeend',
-        `
-        <tr>
-          <td>${r.user_bet}</td>
-          <td>${r.user_num}</td>
-          <td><div class="t" title="${r.random_hash}">${
-          r.random_hash
-        }</div></td>
-          <td>${r.random_num}</td>
-          <td>${Math.ceil(r.profit * 0.000000000000000001)}</td>
-          <td>${r.balance}</td>
-        </tr>
-      `
-      )
+      // const r = play.bankroller.result
+      // table.insertAdjacentHTML(
+      //   'beforeend',
+      //   `
+      //   <tr>
+      //     <td>${r.user_bet}</td>
+      //     <td>${r.user_num}</td>
+      //     <td><div class="t" title="${r.random_hash}">${
+      //     r.random_hash
+      //   }</div></td>
+      //     <td>${r.random_num}</td>
+      //     <td>${Math.ceil(r.profit * 0.000000000000000001)}</td>
+      //     <td>${r.balance}</td>
+      //   </tr>
+      // `
+      // )
 
       endBtn.disabled = false
       if (playCnt++ > 3) {
