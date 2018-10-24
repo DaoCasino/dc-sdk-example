@@ -1,0 +1,174 @@
+html, body {
+  background: #222;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight:200; letter-spacing: 0.2px;
+
+  color: #ccc;
+  caret-color:#fff;
+}
+
+b {
+  font-weight: 400; color:#ddd;
+}
+
+::selection {
+  color:#fff; background: #000;
+}
+
+
+h1,h2,h3 {
+  color: #777;
+    opacity: 0.9;
+    font-weight: 200;
+    letter-spacing: 1px;
+    text-shadow: 0px -1px 0 #000;
+}
+
+hr {
+  border: 0; 
+  border-top: 1px solid #202020;
+  border-bottom: 1px solid #2f2f2f;
+}
+
+a {
+  color:#fff;
+}
+
+
+input {
+  font-size: 1.2em;
+  color:#eee;
+  background: transparent;
+  padding: 5px 10px;
+  border:0;
+  border-bottom: 2px solid #bbb;
+  &:focus {
+    border-bottom-color: #eee;
+    outline: none;
+  }
+}
+input[type="radio"] { cursor: pointer; }
+button {
+  cursor: pointer;
+  border: 0; 
+  font-size: 1.1em;
+  color:#eee;
+  background: #444; 
+  padding: 10px 20px;
+  font-weight: 200;
+  text-transform: uppercase; letter-spacing: 1px;
+
+  &:hover {
+    background: #404040;
+  } 
+  &:focus { 
+    outline: none;
+    background: #333;
+  }
+
+  &[disabled] {
+    opacity: 0.1;
+    pointer-events: none;
+  }
+}
+
+
+
+
+
+
+#tutorial_app {
+  margin: 20px auto;
+  width: 80%; min-width: 500px; max-width: 800px;
+
+  code,pre {
+    padding: 2px 5px;
+    background: #333;
+  }
+  pre {
+    display: block;
+    padding: 10px 20px;
+  }
+
+  .step {
+    position: relative;
+    padding-bottom: 50px;
+
+    p {
+      line-height: 1.9em;
+    }
+      line-height: 1.9em;
+
+    button.next {
+      position: absolute;
+      bottom: 10px; right: 10px;
+    }
+
+    label {
+      display: block;
+    }
+  }
+
+  .step { display: none }
+
+  &.show-step-0 .step-0 { display: block; }
+  &.show-step-1 .step-1 { 
+    display: block; 
+    .initied { display: none }
+    &.initied .init { display: none }
+    &.initied .initied { display: block }
+  }
+
+  &.show-step-2 .step-2 { display: block; }
+  &.show-step-3 .step-3 { display: block; }
+  &.show-step-4 .step-4 { display: block; }
+  &.show-step-5 .step-5 { display: block; }
+
+
+  table.play-log {
+    caption {
+      text-align:left;
+    }
+    border-collapse: collapse;
+    text-align:left;
+    td, th {
+      white-space: nowrap;
+      border: 1px solid #555;
+      padding:3px;
+    }
+
+    .t {
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  padding-bottom: 200px;
+  #log {
+    display: none;
+    box-sizing: border-box;
+    .title {
+      box-sizing: border-box;
+      height: 30px; overflow: hidden;
+      position: fixed; bottom:170px; left:0; width:100%;
+      background: #151515;
+      padding: 8px 20px;
+      text-transform: uppercase; letter-spacing: 1px;
+      font-size: 12px;
+    }
+
+    background: rgba(0,0,0,0.3);
+    padding: 30px 20px 10px 20px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    height: 200px;
+    overflow: scroll;
+  }
+}
+
+
+

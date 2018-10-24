@@ -1,0 +1,11 @@
+dapp/index.html
+dapp/static/**
+dapp/static/lib/DC.js
+dapp/config/dclib.js
+scripts/**
+tmp/**
+dist/**
+build/**
+node_modules/**
+contracts/**
+migrations/config.js

@@ -1,0 +1,26 @@
+{
+  "ignore": [
+    "truffle-box.json",
+    "truffle-init.json",
+    "box-img-lg.png",
+    "box-img-sm.png"
+  ],
+  
+  "commands": {
+    "First run npm install"    : "npm install",
+
+    "Run dev server"           : "npm start",
+    "Test DApp"                : "npm test",
+    "Build for ropsten"        : "npm run build",
+    "Deploy to ropsten & IPFS" : "npm run deploy",
+    
+    "Stop dev env(docker)"     : "npm stop",
+    "Clean tmp data"           : "npm run reset"
+  },
+
+  "hooks": {
+    "__post-unpack": "npm install"
+  },
+
+  "epilogue": "Hint: make sure you have docker-compose ( https://docs.docker.com/install/ )\n\n Run the dev server via `npm start`.\n\n Ethereum testrpc(ganache-cli) running in docker container on port 1406"
+}
