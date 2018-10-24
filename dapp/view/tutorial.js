@@ -9,20 +9,7 @@ import { Game, Account } from 'dc-webapi'
     '1111',
     '0x8d5366123cb560bb606379f90a0bfd4769eecc0557f1b362dcae9012b548b1e5'
   )
-  function GameLogic () {
-    return 'hui'
-  }
-  window.game = new Game({
-    name: process.env.DAPP_SLUG,
-    contract: require('config/dapp.contract.json'),
-    Account: window.acc,
-    gameLogicFunction: GameLogic,
-    rules: {
-      depositX: 2
-    }
-  })
 })()
-import App from 'app'
 
 const DEMO_privkey =
   '0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3'
@@ -96,28 +83,21 @@ export default new class View {
     const btn = this.root.querySelector('.step-2 button')
     btn.onclick = async () => {
       btn.disabled = true
-      window.MyApp = await App.init({
-        slug: process.env.DAPP_SLUG,
+      function GameLogic () {
+        return 'hui'
+      }
+      console.log(require('../dapp.logic.js'))
+      window.game = new Game({
+        name: process.env.DAPP_SLUG,
         contract: require('config/dapp.contract.json'),
+        account: window.acc,
+        gameLogicFunction: GameLogic,
         rules: {
           depositX: 2
         }
       })
-
       const log = document.getElementById('log')
-      window.MyApp.Status.on('error', data => {
-        log.style.display = 'block'
-        log.innerHTML += `<p><b>ERROR</b>: ${JSON.stringify(data)}</p>`
-      })
-        .on('connect::info', data => {
-          log.style.display = 'block'
-          log.innerHTML += `<p><b>INFO</b>: ${JSON.stringify(data)}</p>`
-        })
-        .on('connect::error', data => {
-          log.style.display = 'block'
-          log.innerHTML += `<p><b>ERROR</b>: ${JSON.stringify(data)}</p>`
-        })
-
+      log.style.display = 'block'
       this.showStep3()
     }
   }
