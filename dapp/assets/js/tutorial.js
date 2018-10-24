@@ -88,7 +88,7 @@ export default new class View {
         name: manifest.slug,
         contract: manifest.contract,
         account: window.acc,
-        gameLogicFunction: dapp.play,
+        gameLogicFunction: dapp,
         rules: {
           depositX: 2
         }
