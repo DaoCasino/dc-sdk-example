@@ -2,20 +2,20 @@
 
 const fs = require('fs')
 
-const autoprefixer                  = require('autoprefixer')
-const path                          = require('path')
-const webpack                       = require('webpack')
-const HtmlWebpackPlugin             = require('html-webpack-plugin')
-const CaseSensitivePathsPlugin      = require('case-sensitive-paths-webpack-plugin')
-const InterpolateHtmlPlugin         = require('react-dev-utils/InterpolateHtmlPlugin')
+const autoprefixer = require('autoprefixer')
+const path = require('path')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
+const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin')
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin')
-const eslintFormatter               = require('react-dev-utils/eslintFormatter')
-const SWPlugin                      = require('serviceworker-webpack-plugin')
-const fileWatcher                   = require('extra-watch-webpack-plugin')
+const eslintFormatter = require('react-dev-utils/eslintFormatter')
+const SWPlugin = require('serviceworker-webpack-plugin')
+const fileWatcher = require('extra-watch-webpack-plugin')
 // const ModuleScopePlugin             = require('react-dev-utils/ModuleScopePlugin')
 
-const getClientEnvironment          = require('./env')
-const paths                         = require('./paths')
+const getClientEnvironment = require('./env')
+const paths = require('./paths')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -36,12 +36,12 @@ const metaconf = require('../tools/metainfo/config.js')
 
 htmlReplacements.META_INFORMATION = ''
 try {
-  htmlReplacements.META_INFORMATION = fs.readFileSync(metaconf.files_dest + metaconf.html_filename)
+  htmlReplacements.META_INFORMATION = fs.readFileSync(
+    metaconf.files_dest + metaconf.html_filename
+  )
 } catch (e) {
   htmlReplacements.META_INFORMATION = ''
 }
-
-const protocol_contracts = require('../../dapp/config/addresses.json')
 
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
@@ -99,7 +99,8 @@ let front_dev_config = {
     publicPath: publicPath,
 
     // Point sourcemap entries to original disk location
-    devtoolModuleFilenameTemplate: info => path.resolve(info.absoluteResourcePath)
+    devtoolModuleFilenameTemplate: info =>
+      path.resolve(info.absoluteResourcePath)
   },
 
   resolve: {
@@ -107,18 +108,19 @@ let front_dev_config = {
     // We placed these paths second because we want `node_modules` to "win"
     // if there are any conflicts. This matches Node resolution mechanism.
     // https://github.com/facebookincubator/create-react-app/issues/253
-    modules: ['node_modules', paths.appNodeModules].concat(
-      // It is guaranteed to exist because we tweak it in `env.js`
-      process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
-    ).concat(paths.myModules),
+    modules: ['node_modules', paths.appNodeModules]
+      .concat(
+        // It is guaranteed to exist because we tweak it in `env.js`
+        process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
+      )
+      .concat(paths.myModules),
 
     // These are the reasonable defaults supported by the Node ecosystem.
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebookincubator/create-react-app/issues/290
     extensions: ['.js', '.json'],
-    alias: {
-    },
+    alias: {},
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
       // This often causes confusion because we only process files within src/ with babel.
@@ -196,17 +198,17 @@ let front_dev_config = {
         test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
         loader: require.resolve('url-loader'),
         options: {
-          limit : 10000,
-          name  : 'static/media/[name].[hash : 8].[ext]'
+          limit: 10000,
+          name: 'static/media/[name].[hash : 8].[ext]'
         }
       },
 
       // Process JS with Babel.
       {
-        test    : /\.(js)$/,
-        include : paths.appSrc,
-        enforce : 'post',
-        loader  : require.resolve('babel-loader'),
+        test: /\.(js)$/,
+        include: paths.appSrc,
+        enforce: 'post',
+        loader: require.resolve('babel-loader'),
         options: {
           // This is a feature of `babel-loader` for webpack (not Babel itself).
           // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -253,29 +255,27 @@ let front_dev_config = {
 
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "file" loader exclusion list.
-
     ]
   },
 
   plugins: [
-    new webpack.ProvidePlugin({
-    }),
+    new webpack.ProvidePlugin({}),
 
     new SWPlugin({
-      entry: paths.appIndexSW,
+      entry: paths.appIndexSW
       // filename: paths.dist_appIndexSW
     }),
 
     new fileWatcher({
-      files: [ paths.DappManifest, paths.DappLogic ],
+      files: [paths.DappManifest, paths.DappLogic],
       dirs: ['dapp/config']
     }),
 
-    new webpack.ProgressPlugin(function(percentage, msg) {
-        if (percentage==0){
-            require('./copy.dapp').copyDappFiles('./')
-        } else if (percentage==1){
-        }
+    new webpack.ProgressPlugin(function (percentage, msg) {
+      if (percentage == 0) {
+        require('./copy.dapp').copyDappFiles('./')
+      } else if (percentage == 1) {
+      }
     }),
 
     // Makes some environment variables available in index.html.
@@ -322,7 +322,7 @@ let front_dev_config = {
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
   node: {
-    fs:  'empty',
+    fs: 'empty',
     net: 'empty',
     tls: 'empty'
   },
@@ -334,7 +334,6 @@ let front_dev_config = {
     hints: false
   }
 }
-
 
 // SASS loader
 // front_dev_config.module.rules.push({
@@ -356,12 +355,11 @@ front_dev_config.module.rules.push({
     // creates style nodes from JS strings
     { loader: 'style-loader' },
     // translates CSS into CommonJS
-    { loader: 'css-loader'   },
+    { loader: 'css-loader' },
     // compiles Less to CSS
-    { loader: 'less-loader'  }
+    { loader: 'less-loader' }
   ]
 })
-
 
 front_dev_config.module.rules.push({
   test: /\.styl$/,
@@ -369,11 +367,11 @@ front_dev_config.module.rules.push({
     // creates style nodes from JS strings
     { loader: 'style-loader' },
     // translates CSS into CommonJS
-    { loader: 'css-loader'   },
+    { loader: 'css-loader' },
     // compiles stylus
-    { loader: 'stylus-loader'  }
+    { loader: 'stylus-loader' }
   ]
 })
 
 // module.exports = [front_dev_config]
-module.exports = [ front_dev_config ].concat( require('./copy.dapp').webpack )
+module.exports = [front_dev_config].concat(require('./copy.dapp').webpack)

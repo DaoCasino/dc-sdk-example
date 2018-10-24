@@ -14,33 +14,8 @@
     "display": "standalone",
     "orientation": "portrait"
   },
-  "paths": {
-    "dapp": {
-      "contract_abi": "./dapp/config/dapp.contract.json"
-    },
-    "truffle": {
-      "contracts_directory": "./contracts",
-      "migrations_directory": "./migrations",
-      "contracts_build_directory": "./dapp/config/contracts/"
-    }
-  },
   "scripts": {
-    "meta:generate": "cd ./scripts/tools/metainfo && npm i && npm start",
-    "meta:clean": "rm -rf  ./dapp/static/meta",
-    "watch_contracts": "node ./scripts/watch_contracts.js",
-    "start": "sh ./scripts/start.sh",
-    "dev": "dc-scripts run --sdk && truffle migrate --reset --compile-all && node ./scripts/devserver.js",
-    "stop": "dc-scripts stop",
-    "build": "node ./scripts/build.js",
-    "deploy:contracts:local": "truffle migrate --network development --reset --compile-all",
-    "deploy:contracts:ropsten": "truffle migrate --network ropsten --reset --compille-all",
-    "deploy:frontend:ipfs": "cd ./scripts/tools/deploy_ipfs && npm run deploy",
-    "deploy": "npm run deploy:frontend:ipfs",
-    "publish": "echo 'Publish to dao.casino marketeplace - coming soon'",
-    "logs:bankroller": "dc-scripts logs dc_bankroller",
-    "logs:rpc": "dc-scripts logs dc_protocol",
-    "lint": "eslint ./",
-    "test": "truffle test"
+    "start":"node ./scripts/devserver.js"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",

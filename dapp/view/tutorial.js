@@ -56,7 +56,6 @@ export default new class View {
 
       setTimeout(async () => {
         try {
-          // DCLib.Account.create(privkey_input.value, '1234')
           window.localStorage.last_privkey = privkey_input.value
         } catch (e) {
           btn.disabled = false
