@@ -307,5 +307,4 @@ front_dev_config.module.rules.push({
   ]
 })
 
-// module.exports = [front_dev_config]
-module.exports = [front_dev_config].concat(require('./copy.dapp').webpack)
+module.exports = [front_dev_config]
