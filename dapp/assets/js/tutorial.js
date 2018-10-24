@@ -83,7 +83,7 @@ export default new class View {
     const btn = this.root.querySelector('.step-2 button')
     btn.onclick = async () => {
       btn.disabled = true
-      const contract = 'config/dapp.contract.json'
+      const contract = require('../../dapp.manifest.js').contract // 'config/dapp.contract.json'
       window.game = new Game({
         name: 'DCGame_ex_v1',
         contract: contract,
