@@ -1,6 +1,7 @@
 /* global alert */
 
 import '../style/tutorial.less'
+import { dapp } from '../../dapp.logic.js'
 import template from './tutorials_template.js'
 import { Game, Account } from 'dc-webapi'
 ;(async () => {
@@ -82,16 +83,12 @@ export default new class View {
     const btn = this.root.querySelector('.step-2 button')
     btn.onclick = async () => {
       btn.disabled = true
-      function GameLogic () {
-        return 'hui'
-      }
-      // console.log(require('../dapp.logic.js'))
       const contract = 'config/dapp.contract.json'
       window.game = new Game({
         name: 'DCGame_ex_v1',
         contract: contract,
         account: window.acc,
-        gameLogicFunction: GameLogic,
+        gameLogicFunction: dapp,
         rules: {
           depositX: 2
         }
