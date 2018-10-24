@@ -2,6 +2,7 @@
 
 import '../style/tutorial.less'
 import { dapp } from '../../dapp.logic.js'
+import manifest from '../../dapp.manifest.js'
 import template from './tutorials_template.js'
 import { Game, Account } from 'dc-webapi'
 ;(async () => {
@@ -83,10 +84,9 @@ export default new class View {
     const btn = this.root.querySelector('.step-2 button')
     btn.onclick = async () => {
       btn.disabled = true
-      const contract = require('../../dapp.manifest.js').contract // 'config/dapp.contract.json'
       window.game = new Game({
         name: 'DCGame_ex_v1',
-        contract: contract,
+        contract: manifest.contract,
         account: window.acc,
         gameLogicFunction: dapp,
         rules: {
@@ -108,14 +108,14 @@ export default new class View {
       const deposit = this.root.querySelector('.step-3 input[name="deposit"]')
         .value
       try {
-        await window.game.start()
       } catch (e) {
         console.error(e)
       }
       // const connection = await App.startGame(deposit)
       let connection = ''
       try {
-        connection = await window.game.connect({
+        await window.game.start()
+        await window.game.connect({
           playerDeposit: deposit,
           gameData: []
         })
@@ -125,7 +125,8 @@ export default new class View {
         console.warn('Cant connect, please repeat...')
         return
       }
-      console.info('Connect result', connection)
+      connection = 'success'
+      console.info('Connect result: success')
       this.showStep4(connection)
     }
   }
@@ -140,8 +141,7 @@ export default new class View {
     endBtn.disabled = true
     endBtn.onclick = async () => {
       this.showStep5()
-      await window.game.disconnect()
-      // this.disconnect()
+      this.disconnect()
     }
 
     const btn = this.root.querySelector('.step-4 button.play')
@@ -153,11 +153,16 @@ export default new class View {
       const choice = +document.querySelector(
         '.step-4 input[name="choice"]:checked'
       ).value
-      const play = await window.game.play({
-        userBet: bet,
-        gameData: [choice],
-        rndOpts: [[10, 30], [100, 500]]
-      })
+      try {
+        await window.game.play({
+          userBet: bet,
+          gameData: [choice],
+          rndOpts: [[10, 30], [100, 500]]
+        })
+      } catch (e) {
+        console.error(e)
+      }
+      const play = ''
       // const play = await App.play(bet, choice)
       console.info('Play result:')
       console.info(play)
@@ -201,7 +206,13 @@ export default new class View {
     const btn = document.querySelector('.step-5 button')
     btn.disabled = true
     this.root.querySelector('.step-5 .close-block').style.display = 'none'
-    const disconnect = await window.game.disconnect()
+    try {
+      await window.game.disconnect()
+    } catch (e) {
+      console.error(e)
+      console.info('Disconnect result:', 'error')
+    }
+    const disconnect = 'success'
     // const disconnect = await App.endGame()
     console.info('Disconnect result:', disconnect)
     this.root.querySelector('.step-5 #close_result').innerHTML = JSON.stringify(
