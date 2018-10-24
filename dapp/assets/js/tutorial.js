@@ -1,7 +1,7 @@
 /* global alert */
 
-import './tutorial.less'
-import template from './tutorials.js'
+import '../style/tutorial.less'
+import template from './tutorials_template.js'
 import { Game, Account } from 'dc-webapi'
 ;(async () => {
   window.acc = new Account()
@@ -85,10 +85,10 @@ export default new class View {
       function GameLogic () {
         return 'hui'
       }
-      console.log(require('../dapp.logic.js'))
+      // console.log(require('../dapp.logic.js'))
       const contract = 'config/dapp.contract.json'
       window.game = new Game({
-        name: process.env.DAPP_SLUG,
+        name: 'DCGame_ex_v1',
         contract: contract,
         account: window.acc,
         gameLogicFunction: GameLogic,
@@ -128,13 +128,6 @@ export default new class View {
         console.warn('Cant connect, please repeat...')
         return
       }
-      // console.log('connection', connection)
-      // if (!connection.connected) {
-      //   btn.disabled = false
-      //   console.warn('Cant connect, please repeat...')
-      //   return
-      // }
-
       console.info('Connect result', connection)
       this.showStep4(connection)
     }

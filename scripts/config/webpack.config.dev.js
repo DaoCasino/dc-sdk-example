@@ -1,20 +1,14 @@
 'use strict'
-
-const fs = require('fs')
-
 const autoprefixer = require('autoprefixer')
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
-const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin')
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin')
 const eslintFormatter = require('react-dev-utils/eslintFormatter')
-const SWPlugin = require('serviceworker-webpack-plugin')
 const fileWatcher = require('extra-watch-webpack-plugin')
 // const ModuleScopePlugin             = require('react-dev-utils/ModuleScopePlugin')
 
-const getClientEnvironment = require('./env')
 const paths = require('./paths')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
@@ -24,24 +18,6 @@ const publicPath = '/'
 // `publicUrl` is just like `publicPath`, but we will provide it to our app
 // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
 // Omit trailing slash as %PUBLIC_PATH%/xyz looks better than %PUBLIC_PATH%xyz.
-const publicUrl = ''
-
-// Get environment variables to inject into our app.
-const env = getClientEnvironment(publicUrl)
-// console.log('env', env.raw); process.exit()
-let htmlReplacements = env.raw
-
-// Read favicons html
-const metaconf = require('../tools/metainfo/config.js')
-
-htmlReplacements.META_INFORMATION = ''
-try {
-  htmlReplacements.META_INFORMATION = fs.readFileSync(
-    metaconf.files_dest + metaconf.html_filename
-  )
-} catch (e) {
-  htmlReplacements.META_INFORMATION = ''
-}
 
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
@@ -104,21 +80,6 @@ let front_dev_config = {
   },
 
   resolve: {
-    // This allows you to set a fallback for where Webpack should look for modules.
-    // We placed these paths second because we want `node_modules` to "win"
-    // if there are any conflicts. This matches Node resolution mechanism.
-    // https://github.com/facebookincubator/create-react-app/issues/253
-    modules: ['node_modules', paths.appNodeModules]
-      .concat(
-        // It is guaranteed to exist because we tweak it in `env.js`
-        process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
-      )
-      .concat(paths.myModules),
-
-    // These are the reasonable defaults supported by the Node ecosystem.
-    // We also include JSX as a common component filename extension to support
-    // some tools, although we do not recommend using it, see:
-    // https://github.com/facebookincubator/create-react-app/issues/290
     extensions: ['.js', '.json'],
     alias: {},
     plugins: [
@@ -259,43 +220,16 @@ let front_dev_config = {
   },
 
   plugins: [
-    new webpack.ProvidePlugin({}),
-
-    new SWPlugin({
-      entry: paths.appIndexSW
-      // filename: paths.dist_appIndexSW
-    }),
-
     new fileWatcher({
       files: [paths.DappManifest, paths.DappLogic],
       dirs: ['dapp/config']
     }),
-
-    new webpack.ProgressPlugin(function (percentage, msg) {
-      if (percentage == 0) {
-        require('./copy.dapp').copyDappFiles('./')
-      } else if (percentage == 1) {
-      }
-    }),
-
-    // Makes some environment variables available in index.html.
-    // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
-    // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    // In development, this will be an empty string.
-    new InterpolateHtmlPlugin(htmlReplacements),
 
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: 'head',
       template: paths.appHtml
     }),
-
-    // Add module names to factory functions so they appear in browser profiler.
-    new webpack.NamedModulesPlugin(),
-
-    // Makes some environment variables available to the JS code, for example:
-    // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
-    new webpack.DefinePlugin(env.stringified),
 
     // This is necessary to emit hot updates (currently CSS only):
     new webpack.HotModuleReplacementPlugin(),

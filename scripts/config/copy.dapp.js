@@ -1,5 +1,3 @@
-const webpack = require('webpack')
-const env = require('./env')('')
 const fs = require('fs')
 const path = require('path')
 const paths = require('./paths')
@@ -9,7 +7,7 @@ module.exports = {
     loc = loc || './config'
     let dapp_slug = ''
     try {
-      dapp_slug = require(loc + '/env')('').raw.DAPP_SLUG
+      dapp_slug = 'DCGame_ex_v1'
     } catch (e) {
       console.error('Cant read DAPP_SLUG option in .env file')
       console.error('Please check this')
@@ -21,7 +19,7 @@ module.exports = {
     // Logic
     let l = fs
       .readFileSync(paths.DappLogic, 'utf8')
-      .split('process.env.DAPP_SLUG')
+      .split('DCGame_ex_v1')
       .join("'" + dapp_slug + "'")
     fs.writeFileSync(
       paths.appBuild + '/' + paths.DappLogic.split('/').slice(-1),
@@ -43,7 +41,7 @@ module.exports = {
     // Manifest
     let m = fs
       .readFileSync(paths.DappManifest, 'utf8')
-      .split('process.env.DAPP_SLUG')
+      .split('DCGame_ex_v1')
       .join("'" + dapp_slug + "'")
       .split("require('" + p + "')")
       .join(JSON.stringify(contract_data))
@@ -63,8 +61,7 @@ module.exports = {
       output: {
         path: paths.appBuild,
         filename: 'dapp.logic.js'
-      },
-      plugins: [new webpack.DefinePlugin(env.stringified)]
+      }
     }
   ]
 }
