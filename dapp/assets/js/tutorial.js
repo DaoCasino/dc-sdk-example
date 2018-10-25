@@ -5,16 +5,13 @@ import { dapp } from '../../dapp.logic.js'
 import manifest from '../../dapp.manifest.js'
 import template from './tutorials_template.js'
 import { Game, Account } from 'dc-webapi'
+const DEMO_privkey =
+  '0x598ed0ea02d56414a538c8a3a60cda10900c3492a396d3dde0822e80bba46dae'
 ;(async () => {
   window.acc = new Account()
-  await window.acc.init(
-    '1111',
-    '0x8d5366123cb560bb606379f90a0bfd4769eecc0557f1b362dcae9012b548b1e5'
-  )
-})()
 
-const DEMO_privkey =
-  '0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3'
+  await window.acc.init('1111', DEMO_privkey)
+})()
 
 export default new class View {
   // constructor () {
@@ -80,7 +77,6 @@ export default new class View {
 
   showStep2 () {
     this.showStep(2)
-    console.log(dapp(['hui']))
     const btn = this.root.querySelector('.step-2 button')
     btn.onclick = async () => {
       btn.disabled = true

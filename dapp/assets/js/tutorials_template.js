@@ -9,11 +9,44 @@ const template = `<div id="tutorial_app" class="show-step-0">
         This "wizard" provide you on basic steps of Dapp lifecycle
         <br>
         <ul>
-          <li>Init Ethereum Account</li>
-          <li>Init Dapp</li>
-          <li>Connect (findBankrolelr, openGameChannel)</li>
-          <li>Play (getRandom, calcBalance)</li>
-          <li>Disconnect (closeGameChannel)</li>
+        <li>Import the dc-webapi library from the mono repository <code>import { Game, Account } from 'dc-webapi'</code></li>
+          <li>Start with create an object within the "Account" class to manage the account and initialize the Ethereum account
+            <code>
+              <br/>Account window.acc = new Account();
+              <br/>await window.acc.init("1111", "private key")
+            </code>
+          </li>
+          <li>Init Dapp 
+          <code>
+          <br/>window.game = new Game({
+            <br/>name: dappManifest.slug,
+            <br/>contract: dappManifest.contract,
+            <br/> account: window.acc,
+            <br/> gameLogicFunction: GameLogic,
+            <br/>rules: dappManifest.rules
+          })
+          </code>
+          </li>
+          <li>Start and find bakroller 
+            <code>await window.game.connect({ playerDeposit: 10, gameData: [] })</code>
+          </li>
+          <li>Connect to bankroller 
+            <code>await window.game.start()</code>
+          </li>
+          <li>Play 
+            <code>
+              <br/>const gameOneResult = await window.game.play({
+               userBet: 2,
+               gameData: [2],
+               rndOpts:[[10,30],[100,500]]
+               })
+            </code>
+          </li>
+          <li>Disconnect 
+            <code>
+              await window.game.disconnect()
+            </code>
+          </li>
         </ul>
         <br>
         realization in code placed: <code>./dapp/model/app.js</code>
@@ -35,28 +68,23 @@ const template = `<div id="tutorial_app" class="show-step-0">
         <button>Init Account</button>
       </div>
       <div class="initied">
-        <code>DCLib.Account.info().then(console.log)</code>
+        <code>window.acc._Eth._account</code>
         <p>OK, your account info:</p>
         <pre id="acc_info" style="white-space: inherit"></pre>
       </div>
-
-      <p>You can find accounts private keys for local environment in <a target="_blank" href="https://github.com/DaoCasino/SDK/blob/master/README.md#private-keys"><b>./README.md</b></a></p>
-      <p></p>
-      <p>Code Example<code>DCLib.Account.create(privkey, '1234')</code></p>
     </div>
     
     <!-- init Dapp -->
     <div class="step step-2">
       <h2>Second - init your Dapp</h2>
       
-      <p>Code Example<pre>const dappConfig = {
-    slug : process.env.DAPP_SLUG,
-    contract : require('config/dapp.contract.json'),
-    rules : {
-      depositX : 2
-    }
-  }
-  window.DApp = new DCLib.DApp(dappConfig)
+      <p>Code Example<pre>window.game = new Game({
+    name: dappManifest.slug,
+    contract: dappManifest.contract,
+    account: window.acc,
+    gameLogicFunction: GameLogic,
+    rules: dappManifest.rules
+  })
       </pre></p>
 
 
