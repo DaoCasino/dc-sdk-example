@@ -155,7 +155,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
       </label>
       <br>
 
-      <table class="play-log">
+      <table id="play-table-results" class="play-log">
         <caption>play log:</caption>
         <thead><tr>
           <th>bet</th>
