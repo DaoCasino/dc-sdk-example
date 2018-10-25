@@ -1,16 +1,26 @@
 /* global alert */
 
-import '../style/tutorial.less'
-import { dapp } from '../../dapp.logic.js'
-import manifest from '../../dapp.manifest.js'
-import template from './tutorials_template.js'
-import { Game, Account } from 'dc-webapi'
-const DEMO_privkey =
-  '0x598ed0ea02d56414a538c8a3a60cda10900c3492a396d3dde0822e80bba46dae'
-;(async () => {
-  window.acc = new Account()
+import "../style/tutorial.less"
+import { dapp } from "../../dapp.logic.js"
+import manifest from "../../dapp.manifest.js"
+import template from "./tutorials_template.js"
+import DCWebapi from "dc-webapi"
 
-  await window.acc.init('1111', DEMO_privkey)
+const DC_NETWORK = "ropsten"
+const playerPrivateKeys = {
+  ropsten: "0x598ed0ea02d56414a538c8a3a60cda10900c3492a396d3dde0822e80bba46dae",
+  rinkeby: "0x598ed0ea02d56414a538c8a3a60cda10900c3492a396d3dde0822e80bba46dae",
+  local: ""
+}
+
+const WALLET_PWD = "1234"
+;(async () => {
+  const webapi = new DCWebapi({
+    platformId: "DC_sdk",
+    blockchainNetwork: DC_NETWORK
+  })
+  window.webapi = webapi
+  webapi.account.init(WALLET_PWD, playerPrivateKeys[DC_NETWORK])
 })()
 
 export default new class View {
@@ -18,22 +28,22 @@ export default new class View {
 
   // }
 
-  init () {
-    document.getElementById('tutorial_mount_point').innerHTML = template
-    this.root = document.getElementById('tutorial_app')
+  init() {
+    document.getElementById("tutorial_mount_point").innerHTML = template
+    this.root = document.getElementById("tutorial_app")
     this.setEvents()
   }
 
-  setEvents () {
-    this.root.querySelector('.step-0 button').onclick = () => {
+  setEvents() {
+    this.root.querySelector(".step-0 button").onclick = () => {
       this.showStep1()
     }
   }
-  showStep (num) {
-    this.root.className = 'show-step-' + num
+  showStep(num) {
+    this.root.className = "show-step-" + num
   }
 
-  showStep1 () {
+  showStep1() {
     this.showStep(1)
     const privkey_input = this.root.querySelector(
       '.step-1 input[name="privkey"]'
@@ -43,30 +53,31 @@ export default new class View {
       privkey_input.value = window.localStorage.last_privkey
     } else {
       setTimeout(() => {
-        if (!privkey_input.value) privkey_input.value = DEMO_privkey
+        if (!privkey_input.value) {
+          privkey_input.value = playerPrivateKeys[DC_NETWORK]
+        }
       }, 7777)
     }
 
-    const btn = this.root.querySelector('.step-1 button')
+    const btn = this.root.querySelector(".step-1 button")
     btn.onclick = () => {
       btn.disabled = true
-      this.root.querySelector('.step-1 .init').style.display = 'none'
+      this.root.querySelector(".step-1 .init").style.display = "none"
 
       setTimeout(async () => {
         try {
           window.localStorage.last_privkey = privkey_input.value
         } catch (e) {
           btn.disabled = false
-          this.root.querySelector('.step-1 .init').style.display = 'block'
-          alert('invalid key')
+          this.root.querySelector(".step-1 .init").style.display = "block"
+          alert("invalid key")
           return
         }
 
-        // const acc_info = await DCLib.Account.info()
-        document.getElementById('acc_info').innerHTML = JSON.stringify(
-          window.acc.address
+        document.getElementById("acc_info").innerHTML = JSON.stringify(
+          window.webapi.account.address
         )
-        this.root.querySelector('.step-1').classList.add('initied')
+        this.root.querySelector(".step-1").classList.add("initied")
         setTimeout(() => {
           this.showStep2()
         }, 3333)
@@ -74,29 +85,28 @@ export default new class View {
     }
   }
 
-  showStep2 () {
+  showStep2() {
     this.showStep(2)
-    const btn = this.root.querySelector('.step-2 button')
+    const btn = this.root.querySelector(".step-2 button")
     btn.onclick = async () => {
       btn.disabled = true
-      window.game = new Game({
+
+      window.game = window.webapi.createGame({
         name: manifest.slug,
-        contract: manifest.contract,
-        account: window.acc,
+        contract: manifest.getContract(DC_NETWORK),
         gameLogicFunction: dapp,
-        rules: {
-          depositX: 2
-        }
+        rules: manifest.rules
       })
-      const log = document.getElementById('log')
-      log.style.display = 'block'
+
+      const log = document.getElementById("log")
+      log.style.display = "block"
       this.showStep3()
     }
   }
-  showStep3 () {
+  showStep3() {
     this.showStep(3)
 
-    const btn = this.root.querySelector('.step-3 button')
+    const btn = this.root.querySelector(".step-3 button")
     btn.onclick = async () => {
       btn.disabled = true
       const deposit = this.root.querySelector('.step-3 input[name="deposit"]')
@@ -106,42 +116,42 @@ export default new class View {
         console.error(e)
       }
       // const connection = await App.startGame(deposit)
-      let connection = ''
+      let connection = ""
       try {
         await window.game.start()
         await window.game.connect({
           playerDeposit: deposit,
-          gameData: []
+          gameData: [0, 0]
         })
       } catch (e) {
         btn.disabled = false
         console.error(e)
-        console.warn('Cant connect, please repeat...')
+        console.warn("Cant connect, please repeat...")
         return
       }
-      connection = 'success'
-      console.info('Connect result: success')
+      connection = "success"
+      console.info("Connect result: success")
       this.showStep4(connection)
     }
   }
 
-  showStep4 (connection) {
+  showStep4(connection) {
     this.showStep(4)
 
     // const table = document.querySelector('.step-4 table.play-log tbody')
     let playCnt = 0
 
-    const endBtn = this.root.querySelector('.step-4 button.next')
+    const endBtn = this.root.querySelector(".step-4 button.next")
     endBtn.disabled = true
     endBtn.onclick = async () => {
       this.showStep5()
       this.disconnect()
     }
 
-    const btn = this.root.querySelector('.step-4 button.play')
+    const btn = this.root.querySelector(".step-4 button.play")
     btn.onclick = async () => {
       btn.disabled = true
-      btn.innerHTML = 'wait...'
+      btn.innerHTML = "wait..."
 
       const bet = +document.querySelector('.step-4 input[name="bet"]').value
       const choice = +document.querySelector(
@@ -151,14 +161,14 @@ export default new class View {
         await window.game.play({
           userBet: bet,
           gameData: [choice],
-          rndOpts: [[10, 30], [100, 500]]
+          rndOpts: [[1, 3]]
         })
       } catch (e) {
         console.error(e)
       }
       // const play = ''
       // const play = await App.play(bet, choice)
-      console.info('Play result:')
+      console.info("Play result:")
       // console.info(play)
       // console.table(play.bankroller.result)
 
@@ -187,32 +197,32 @@ export default new class View {
         return
       }
       btn.disabled = false
-      btn.innerHTML = 'Play'
+      btn.innerHTML = "Play"
     }
   }
 
-  showStep5 () {
+  showStep5() {
     this.showStep(5)
-    this.root.querySelector('.step-5 button').onclick = this.disconnect
+    this.root.querySelector(".step-5 button").onclick = this.disconnect
   }
 
-  async disconnect () {
-    const btn = document.querySelector('.step-5 button')
+  async disconnect() {
+    const btn = document.querySelector(".step-5 button")
     btn.disabled = true
-    this.root.querySelector('.step-5 .close-block').style.display = 'none'
+    this.root.querySelector(".step-5 .close-block").style.display = "none"
     try {
       await window.game.disconnect()
     } catch (e) {
       console.error(e)
-      console.info('Disconnect result:', 'error')
+      console.info("Disconnect result:", "error")
     }
-    const disconnect = 'success'
+    const disconnect = "success"
     // const disconnect = await App.endGame()
-    console.info('Disconnect result:', disconnect)
-    this.root.querySelector('.step-5 #close_result').innerHTML = JSON.stringify(
+    console.info("Disconnect result:", disconnect)
+    this.root.querySelector(".step-5 #close_result").innerHTML = JSON.stringify(
       disconnect
     )
 
-    this.root.querySelector('.step-5 .outro-block').style.display = 'block'
+    this.root.querySelector(".step-5 .outro-block").style.display = "block"
   }
 }()

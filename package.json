@@ -15,8 +15,12 @@
     "orientation": "portrait"
   },
   "scripts": {
+    "start:ropsten":"sh run.sh ropsten ",
     "start:local":"sh run.sh local ",
     "dev":"node ./scripts/devserver.js"
+  },
+  "dependencies": {
+    "dc-webapi":"0.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
@@ -29,7 +33,6 @@
     "case-sensitive-paths-webpack-plugin": "2.1.2",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.26.2",
-    "dc-scripts": "github:daocasino/dc-scripts",
     "dotenv": "6.0.0",
     "eslint": "^3.14.0",
     "eslint-config-standard": "^6.0.0",
@@ -61,7 +64,7 @@
     "webpack": "3.12.0",
     "webpack-dev-server": "2.11.2",
     "webpack-manifest-plugin": "2.0.3",
-    "whatwg-fetch": "2.0.4",
-    "dc-webapi":"0.2.0"
+    "whatwg-fetch": "2.0.4"
+   
   }
 }
