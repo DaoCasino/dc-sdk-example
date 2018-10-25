@@ -29,7 +29,6 @@ export default new class View {
       this.showStep1()
     }
   }
-
   showStep (num) {
     this.root.className = 'show-step-' + num
   }
@@ -94,7 +93,6 @@ export default new class View {
       this.showStep3()
     }
   }
-
   showStep3 () {
     this.showStep(3)
 
