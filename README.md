@@ -16,8 +16,8 @@ git clone --depth=1 https://github.com/DaoCasino/dc-sdk-sample ./myDapp
 cd ./myDapp
 npm i && npm start
 ```
-2. Start the relevant bankroller for the network you want to use (Ropsten, Local, etc).
-```bankroller-core start <privateKey> [options]```
+2. Start the relevant bankroller for the network you want to use (Ropsten, Local, etc).  
+```bankroller-core start <privateKey> [options]```  
 where <privateKey> is the private key reserved for bankroller, and [options] defines the blockchain network. 
 
 
