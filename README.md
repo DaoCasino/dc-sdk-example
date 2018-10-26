@@ -6,11 +6,11 @@
  - installed DC-CLI
  - npm.js
  - node.js (10 or newer)
- - truffle.js (npm i -g truffle)
+ - truffle.js (`npm i -g truffle`)
  If you use Windows, call `npm install --global windows-build-tools.` This command installs components necessary for this operation system.
 
 ## Quick start
-1. Clone the sample repository:
+1. Clone the sample game repository and start the DC-CLI in it:
 ```
 git clone --depth=1 https://github.com/DaoCasino/dc-sdk-sample ./myDapp
 cd ./myDapp
