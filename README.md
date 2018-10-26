@@ -32,4 +32,4 @@ Your dapp core files
 
 
 ## Detailed Documentation
-- https://developers.dao.casino/docs
+- https://developers.dao.casino/docs/2.%20Developer%20Sandbox/2.3.%20Game%20Dev%20Process.html#dapp-structure-overview
