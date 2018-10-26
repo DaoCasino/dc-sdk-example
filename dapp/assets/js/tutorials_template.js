@@ -1,19 +1,3 @@
-/* 
-          <code>await window.game.connect({ playerDeposit: 10, gameData: [] })</code><li>Import the "dc-webapi" library from the mono repository <code>import DCWebapi from 'dc-webapi'</code></li>
-          <li>Start with create an object within the "Account" class to manage the account and initialize the Ethereum account
-            <code>
-            сonst WALLET_PWD = "1234"
-            ;
-            (async () => {
-              const webapi = new DCWebapi({
-                platformId: "DC_sdk",
-                blockchainNetwork: DC_NETWORK
-              })
-              window.webapi = webapi
-              webapi.account.init(WALLET_PWD, playerPrivateKeys[DC_NETWORK])
-            </code>
-          </li>
-          <code>await window.game.connect({ playerDeposit: 10, gameData: [] })</code> */
 const template = `<div id="tutorial_app" class="show-step-0">
     <h1>Basic Dapp flow example </h1>
     <hr>
@@ -42,6 +26,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
           <br/><code>npm install dc-webapi</code> 
           <br/>
             <pre>
+
             import { dapp } from "../../dapp.logic.js"
             import manifest from "../../dapp.manifest.js"
             import DCWebapi from 'dc-webapi'
@@ -76,6 +61,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
     <h2>Init dc-webapi</h2>
     <p>Code Example
     <pre>
+    
     const WALLET_PWD = "1234"
     (async () => {
       const webapi = new DCWebapi({
@@ -101,7 +87,9 @@ const template = `<div id="tutorial_app" class="show-step-0">
       <p>See files:
         <br>
         <b>dapp/dapp.logic.js</b> - contract address and ABI. This is core dapp/game logic constructor for client and bankroller. 
-  <pre>function dapp () {
+  <pre>
+  
+  function dapp () {
     return {
       play: function (userBet, gameData, randoms) {
         const userNum = gameData[0]
@@ -127,6 +115,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
         
         <b>dapp/dapp.logic.js</b> - Reqired to paste you custom logic into the body of the dapp.logic.js function.
         <pre>
+        
         function dapp () {
           return {
             play: yourFunction
