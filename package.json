@@ -1,6 +1,6 @@
 {
   "name": "dc-sdk-example",
-  "version": "0.0.3",
+  "version": "0.1.1",
   "description": "DApp on dao casino protocol example",
   "author": "Alex Step",
   "license": "MIT",
@@ -15,12 +15,12 @@
     "orientation": "portrait"
   },
   "scripts": {
-    "start:ropsten":"sh run.sh ropsten ",
-    "start:local":"sh run.sh local ",
-    "dev":"node ./scripts/devserver.js"
+    "start:ropsten": "sh run.sh ropsten ",
+    "start:local": "sh run.sh local ",
+    "dev": "node ./scripts/devserver.js"
   },
   "dependencies": {
-    "dc-webapi":"0.1.0"
+    "dc-webapi": "0.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
@@ -65,6 +65,5 @@
     "webpack-dev-server": "2.11.2",
     "webpack-manifest-plugin": "2.0.3",
     "whatwg-fetch": "2.0.4"
-   
   }
 }
