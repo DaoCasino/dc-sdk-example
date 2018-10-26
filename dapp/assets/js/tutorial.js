@@ -28,22 +28,25 @@ export default new class View {
 
   // }
 
-  init () {
+  init() {
     document.getElementById("tutorial_mount_point").innerHTML = template
     this.root = document.getElementById("tutorial_app")
     this.setEvents()
   }
 
-  setEvents () {
+  setEvents() {
     this.root.querySelector(".step-0 button").onclick = () => {
       this.showStep1()
     }
   }
-  showStep (num) {
+  showStep(num) {
     this.root.className = "show-step-" + num
   }
 
-  showStep1 () {
+  showStep1() {
+    document
+      .getElementById("choose-network-button")
+      .addEventListener("click", e => console.log(e))
     this.showStep(1)
     const privkey_input = this.root.querySelector(
       '.step-1 input[name="privkey"]'
@@ -85,7 +88,7 @@ export default new class View {
     }
   }
 
-  showStep2 () {
+  showStep2() {
     this.showStep(2)
     const btn = this.root.querySelector(".step-2 button")
     btn.onclick = async () => {
@@ -107,7 +110,7 @@ export default new class View {
       this.showStep3()
     }
   }
-  showStep3 () {
+  showStep3() {
     this.showStep(3)
 
     const btn = this.root.querySelector(".step-3 button")
@@ -139,7 +142,7 @@ export default new class View {
     }
   }
 
-  showStep4 (connection) {
+  showStep4(connection) {
     this.showStep(4)
 
     // const table = document.querySelector('.step-4 table.play-log tbody')
@@ -224,12 +227,12 @@ export default new class View {
     }
   }
 
-  showStep5 () {
+  showStep5() {
     this.showStep(5)
     this.root.querySelector(".step-5 button").onclick = this.disconnect
   }
 
-  async disconnect () {
+  async disconnect() {
     const btn = document.querySelector(".step-5 button")
     btn.disabled = true
     this.root.querySelector(".step-5 .close-block").style.display = "none"

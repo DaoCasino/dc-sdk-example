@@ -44,7 +44,14 @@ const template = `<div id="tutorial_app" class="show-step-0">
     <!-- init acc -->
     <div class="step step-1">
       <h2>First you need to init Ethereum account</h2>
-      
+      <div class="chooseNet">
+      <form id="choose-network-form">
+        <input type="radio" name="network" value="ropsten"> Ropsten<br>
+        <input type="radio" name="network" value="rinkeby"> Rinkeby<br>
+        <input type="radio" name="network" value="local"> Local<br> 
+        <button id = "choose-network-button" type="button">choose network</button>
+        </form>
+      </div>
       <div class="init">
         <input name="privkey" type="text" placeholder="Insert privatekey" required minlength="66" maxlength="66" />
         <button>Init Account</button>
