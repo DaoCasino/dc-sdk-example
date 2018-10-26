@@ -48,14 +48,10 @@ const template = `<div id="tutorial_app" class="show-step-0">
       <div style="display: flex;flex-direction: column;">
         <div class="network-variant network-variant-disable"><label class="network-variant-label" style="background: rgb(41, 182, 175)"></label> <span class="network-variant-name">Mainnet</span></div>
         <div class="network-variant network-variant-disable"><label class="network-variant-label" style="background: rgb(112, 87, 255);"></label> <span class="network-variant-name">Kovan</span></div>
-        <div class="network-variant rinkeby"><label class="network-variant-label" style="background: rgb(246, 195, 67);"></label> <span class="network-variant-name">Rinkeby</span></div>
-        <div class="network-variant ropsten"><label class="network-variant-label" style="background: rgb(255, 74, 141);"></label> <span class="network-variant-name">Ropsten</span></div>
+        <div class="network-variant network-variant-enable"><label class="network-variant-label" style="background: rgb(246, 195, 67);"></label> <span class="network-variant-name">Rinkeby</span></div>
+        <div class="network-variant network-variant-enable"><label class="network-variant-label" style="background: rgb(255, 74, 141);"></label> <span class="network-variant-name">Ropsten</span></div>
         <div class="network-variant network-variant-disable"><label class="network-variant-label"></label> <span class="network-variant-name">local(localhost:8545)</span></div>
-      </div>
-      <div>  
-        <button id = "choose-network-button" type="button">choose network</button>
-      </div>
-        
+      </div>   
       </div>
       <br>
       <div id="body-init">

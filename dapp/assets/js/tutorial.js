@@ -16,9 +16,22 @@ const WALLET_PWD = "1234"
 
 export default new class View {
   init() {
+    const that = this
     document.getElementById("tutorial_mount_point").innerHTML = template
     this.root = document.getElementById("tutorial_app")
     this.setEvents()
+    const enableVariants = document.getElementsByClassName(
+      "network-variant-enable"
+    )
+    for (let i = 0; i < enableVariants.length; i++) {
+      enableVariants[i].addEventListener("click", e => {
+        document.getElementById("body-init").style.display = "block"
+        that.isNetworkChecked = true
+        that.networkChoosed = e.target.innerHTML.trim().toLowerCase()
+        this.root.querySelector('.step-1 input[name="privkey"]').value =
+          playerPrivateKeys[that.networkChoosed]
+      })
+    }
   }
 
   setEvents() {
@@ -35,22 +48,6 @@ export default new class View {
     this.isNetworkChecked = false
     this.networkChoosed = ""
     const that = this
-    document
-      .getElementById("choose-network-button")
-      .addEventListener("click", e => {
-        console.log("click")
-        const inputs = document
-          .getElementById("choose-network-form")
-          .getElementsByTagName("input")
-        for (let i = 0; i < inputs.length; i++) {
-          if (inputs[i].checked) {
-            document.getElementById("body-init").style.display = "block"
-            that.isNetworkChecked = true
-            that.networkChoosed = inputs[i].value
-            console.log(that.isNetworkChecked, that.networkChoosed)
-          }
-        }
-      })
     this.showStep(1)
     const privkey_input = this.root.querySelector(
       '.step-1 input[name="privkey"]'
@@ -61,7 +58,11 @@ export default new class View {
     } else {
       setTimeout(() => {
         if (!privkey_input.value) {
-          privkey_input.value = playerPrivateKeys[that.DC_NETWORK]
+          console.log(
+            playerPrivateKeys[that.networkChoosed],
+            that.networkChoosed
+          )
+          privkey_input.value = playerPrivateKeys[that.networkChoosed]
         }
       }, 7777)
     }
@@ -69,29 +70,25 @@ export default new class View {
     const btn = document
       .getElementById("init-account-button")
       .addEventListener("click", e => {
-        console.log(that.isNetworkChecked, that.networkChoosed)
         if (that.isNetworkChecked && that.networkChoosed) {
           this.root.querySelector(".step-1 .init").style.display = "none"
 
           setTimeout(async () => {
             try {
               that.DC_NETWORK = that.networkChoosed
-              console.log(that.DC_NETWORK)
               const webapi = new DCWebapi({
                 platformId: "DC_sdk",
-                blockchainNetwork: that.DC_NETWORK
+                blockchainNetwork: that.networkChoosed
               })
               window.webapi = webapi
-              webapi.account.init(
-                WALLET_PWD,
-                playerPrivateKeys[that.DC_NETWORK]
-              )
-              window.localStorage.last_privkey =
-                playerPrivateKeys[that.DC_NETWORK]
+              webapi.account.init(WALLET_PWD, privkey_input.value)
+              window.localStorage.last_privkey = privkey_input.value
             } catch (e) {
               console.log(e)
               this.root.querySelector(".step-1 .init").style.display = "block"
               alert("invalid key")
+              that.root.querySelector('.step-1 input[name="privkey"]').value =
+                playerPrivateKeys[that.DC_NETWORK]
               return
             }
 
