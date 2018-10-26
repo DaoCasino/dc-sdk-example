@@ -6,28 +6,15 @@ import manifest from "../../dapp.manifest.js"
 import template from "./tutorials_template.js"
 import DCWebapi from "dc-webapi"
 
-const DC_NETWORK = "ropsten"
 const playerPrivateKeys = {
   ropsten: "0xf67dfe6039ee029ae771d7e2da5a4324532ecc62cb59a292efc9cf49fd1b549e",
-  rinkeby: "0x598ed0ea02d56414a538c8a3a60cda10900c3492a396d3dde0822e80bba46dae",
+  rinkeby: "0x3F8B1B2FC40E744DA0D5D748654E19C5018CC2D43E1FD3EF9FD89E6F7FC652A0",
   local: ""
 }
 
 const WALLET_PWD = "1234"
-// ;(async () => {
-//   const webapi = new DCWebapi({
-//     platformId: "DC_sdk",
-//     blockchainNetwork: DC_NETWORK
-//   })
-//   window.webapi = webapi
-//   webapi.account.init(WALLET_PWD, playerPrivateKeys[DC_NETWORK])
-// })()
 
 export default new class View {
-  // constructor () {
-
-  // }
-
   init() {
     document.getElementById("tutorial_mount_point").innerHTML = template
     this.root = document.getElementById("tutorial_app")
@@ -74,7 +61,7 @@ export default new class View {
     } else {
       setTimeout(() => {
         if (!privkey_input.value) {
-          privkey_input.value = playerPrivateKeys[DC_NETWORK]
+          privkey_input.value = playerPrivateKeys[that.DC_NETWORK]
         }
       }, 7777)
     }
@@ -88,15 +75,19 @@ export default new class View {
 
           setTimeout(async () => {
             try {
-              const DC_NETWORK = that.networkChoosed
-              console.log(DC_NETWORK)
+              that.DC_NETWORK = that.networkChoosed
+              console.log(that.DC_NETWORK)
               const webapi = new DCWebapi({
                 platformId: "DC_sdk",
-                blockchainNetwork: DC_NETWORK
+                blockchainNetwork: that.DC_NETWORK
               })
               window.webapi = webapi
-              webapi.account.init(WALLET_PWD, playerPrivateKeys[DC_NETWORK])
-              window.localStorage.last_privkey = playerPrivateKeys[DC_NETWORK]
+              webapi.account.init(
+                WALLET_PWD,
+                playerPrivateKeys[that.DC_NETWORK]
+              )
+              window.localStorage.last_privkey =
+                playerPrivateKeys[that.DC_NETWORK]
             } catch (e) {
               console.log(e)
               this.root.querySelector(".step-1 .init").style.display = "block"
@@ -124,7 +115,7 @@ export default new class View {
 
       window.game = window.webapi.createGame({
         name: manifest.slug,
-        contract: manifest.getContract(DC_NETWORK),
+        contract: manifest.getContract(this.DC_NETWORK),
         gameLogicFunction: dapp,
         rules: manifest.rules
       })
