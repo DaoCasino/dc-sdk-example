@@ -6,44 +6,51 @@ import manifest from "../../dapp.manifest.js"
 import template from "./tutorials_template.js"
 import DCWebapi from "dc-webapi"
 
-const DC_NETWORK = "ropsten"
 const playerPrivateKeys = {
   ropsten: "0xf67dfe6039ee029ae771d7e2da5a4324532ecc62cb59a292efc9cf49fd1b549e",
-  rinkeby: "0x598ed0ea02d56414a538c8a3a60cda10900c3492a396d3dde0822e80bba46dae",
+  rinkeby: "0x3F8B1B2FC40E744DA0D5D748654E19C5018CC2D43E1FD3EF9FD89E6F7FC652A0",
   local: ""
 }
 
 const WALLET_PWD = "1234"
-;(async () => {
-  const webapi = new DCWebapi({
-    platformId: "DC_sdk",
-    blockchainNetwork: DC_NETWORK
-  })
-  window.webapi = webapi
-  webapi.account.init(WALLET_PWD, playerPrivateKeys[DC_NETWORK])
-})()
 
 export default new class View {
-  // constructor () {
-
-  // }
-
-  init () {
+  init() {
     document.getElementById("tutorial_mount_point").innerHTML = template
     this.root = document.getElementById("tutorial_app")
     this.setEvents()
   }
 
-  setEvents () {
+  setEvents() {
     this.root.querySelector(".step-0 button").onclick = () => {
       this.showStep1()
     }
   }
-  showStep (num) {
+  showStep(num) {
     this.root.className = "show-step-" + num
   }
-
-  showStep1 () {
+  showStep1() {
+    this.button_access = document.getElementById("body-init").style.display =
+      "none"
+    this.isNetworkChecked = false
+    this.networkChoosed = ""
+    const that = this
+    document
+      .getElementById("choose-network-button")
+      .addEventListener("click", e => {
+        console.log("click")
+        const inputs = document
+          .getElementById("choose-network-form")
+          .getElementsByTagName("input")
+        for (let i = 0; i < inputs.length; i++) {
+          if (inputs[i].checked) {
+            document.getElementById("body-init").style.display = "block"
+            that.isNetworkChecked = true
+            that.networkChoosed = inputs[i].value
+            console.log(that.isNetworkChecked, that.networkChoosed)
+          }
+        }
+      })
     this.showStep(1)
     const privkey_input = this.root.querySelector(
       '.step-1 input[name="privkey"]'
@@ -54,38 +61,53 @@ export default new class View {
     } else {
       setTimeout(() => {
         if (!privkey_input.value) {
-          privkey_input.value = playerPrivateKeys[DC_NETWORK]
+          privkey_input.value = playerPrivateKeys[that.DC_NETWORK]
         }
       }, 7777)
     }
 
-    const btn = this.root.querySelector(".step-1 button")
-    btn.onclick = () => {
-      btn.disabled = true
-      this.root.querySelector(".step-1 .init").style.display = "none"
+    const btn = document
+      .getElementById("init-account-button")
+      .addEventListener("click", e => {
+        console.log(that.isNetworkChecked, that.networkChoosed)
+        if (that.isNetworkChecked && that.networkChoosed) {
+          this.root.querySelector(".step-1 .init").style.display = "none"
 
-      setTimeout(async () => {
-        try {
-          window.localStorage.last_privkey = privkey_input.value
-        } catch (e) {
-          btn.disabled = false
-          this.root.querySelector(".step-1 .init").style.display = "block"
-          alert("invalid key")
-          return
+          setTimeout(async () => {
+            try {
+              that.DC_NETWORK = that.networkChoosed
+              console.log(that.DC_NETWORK)
+              const webapi = new DCWebapi({
+                platformId: "DC_sdk",
+                blockchainNetwork: that.DC_NETWORK
+              })
+              window.webapi = webapi
+              webapi.account.init(
+                WALLET_PWD,
+                playerPrivateKeys[that.DC_NETWORK]
+              )
+              window.localStorage.last_privkey =
+                playerPrivateKeys[that.DC_NETWORK]
+            } catch (e) {
+              console.log(e)
+              this.root.querySelector(".step-1 .init").style.display = "block"
+              alert("invalid key")
+              return
+            }
+
+            document.getElementById("acc_info").innerHTML = JSON.stringify(
+              window.webapi.account.address
+            )
+            this.root.querySelector(".step-1").classList.add("initied")
+            setTimeout(() => {
+              this.showStep2()
+            }, 3333)
+          }, 33)
         }
-
-        document.getElementById("acc_info").innerHTML = JSON.stringify(
-          window.webapi.account.address
-        )
-        this.root.querySelector(".step-1").classList.add("initied")
-        setTimeout(() => {
-          this.showStep2()
-        }, 3333)
-      }, 33)
-    }
+      })
   }
 
-  showStep2 () {
+  showStep2() {
     this.showStep(2)
     const btn = this.root.querySelector(".step-2 button")
     btn.onclick = async () => {
@@ -93,7 +115,7 @@ export default new class View {
 
       window.game = window.webapi.createGame({
         name: manifest.slug,
-        contract: manifest.getContract(DC_NETWORK),
+        contract: manifest.getContract(this.DC_NETWORK),
         gameLogicFunction: dapp,
         rules: manifest.rules
       })
@@ -107,7 +129,7 @@ export default new class View {
       this.showStep3()
     }
   }
-  showStep3 () {
+  showStep3() {
     this.showStep(3)
 
     const btn = this.root.querySelector(".step-3 button")
@@ -139,7 +161,7 @@ export default new class View {
     }
   }
 
-  showStep4 (connection) {
+  showStep4(connection) {
     this.showStep(4)
 
     // const table = document.querySelector('.step-4 table.play-log tbody')
@@ -224,12 +246,12 @@ export default new class View {
     }
   }
 
-  showStep5 () {
+  showStep5() {
     this.showStep(5)
     this.root.querySelector(".step-5 button").onclick = this.disconnect
   }
 
-  async disconnect () {
+  async disconnect() {
     const btn = document.querySelector(".step-5 button")
     btn.disabled = true
     this.root.querySelector(".step-5 .close-block").style.display = "none"
