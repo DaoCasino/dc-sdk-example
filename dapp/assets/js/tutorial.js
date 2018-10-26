@@ -57,12 +57,10 @@ export default new class View {
       privkey_input.value = window.localStorage.last_privkey
     } else {
       setTimeout(() => {
-        if (!privkey_input.value) {
-          console.log(
-            playerPrivateKeys[that.networkChoosed],
-            that.networkChoosed
-          )
-          privkey_input.value = playerPrivateKeys[that.networkChoosed]
+        if (!privkey_input.value.length < 66) {
+          alert("Private key is too low repeat again")
+          this.showStep1()
+          // privkey_input.value = playerPrivateKeys[that.networkChoosed]
         }
       }, 7777)
     }
@@ -71,35 +69,40 @@ export default new class View {
       .getElementById("init-account-button")
       .addEventListener("click", e => {
         if (that.isNetworkChecked && that.networkChoosed) {
-          this.root.querySelector(".step-1 .init").style.display = "none"
+          if (privkey_input.value.length < 66) {
+            alert("Private key is too low repeat again")
+            this.showStep1()
+            // privkey_input.value = playerPrivateKeys[that.networkChoosed]
+          } else {
+            this.root.querySelector(".step-1 .init").style.display = "none"
+            setTimeout(async () => {
+              try {
+                that.DC_NETWORK = that.networkChoosed
+                const webapi = new DCWebapi({
+                  platformId: "DC_sdk",
+                  blockchainNetwork: that.networkChoosed
+                })
+                window.webapi = webapi
+                webapi.account.init(WALLET_PWD, privkey_input.value)
+                window.localStorage.last_privkey = privkey_input.value
+              } catch (e) {
+                console.log(e)
+                this.root.querySelector(".step-1 .init").style.display = "block"
+                alert("invalid key")
+                that.root.querySelector('.step-1 input[name="privkey"]').value =
+                  playerPrivateKeys[that.DC_NETWORK]
+                return
+              }
 
-          setTimeout(async () => {
-            try {
-              that.DC_NETWORK = that.networkChoosed
-              const webapi = new DCWebapi({
-                platformId: "DC_sdk",
-                blockchainNetwork: that.networkChoosed
-              })
-              window.webapi = webapi
-              webapi.account.init(WALLET_PWD, privkey_input.value)
-              window.localStorage.last_privkey = privkey_input.value
-            } catch (e) {
-              console.log(e)
-              this.root.querySelector(".step-1 .init").style.display = "block"
-              alert("invalid key")
-              that.root.querySelector('.step-1 input[name="privkey"]').value =
-                playerPrivateKeys[that.DC_NETWORK]
-              return
-            }
-
-            document.getElementById("acc_info").innerHTML = JSON.stringify(
-              window.webapi.account.address
-            )
-            this.root.querySelector(".step-1").classList.add("initied")
-            setTimeout(() => {
-              this.showStep2()
-            }, 3333)
-          }, 33)
+              document.getElementById("acc_info").innerHTML = JSON.stringify(
+                window.webapi.account.address
+              )
+              this.root.querySelector(".step-1").classList.add("initied")
+              setTimeout(() => {
+                this.showStep2()
+              }, 3333)
+            }, 33)
+          }
         }
       })
   }
