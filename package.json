@@ -20,7 +20,7 @@
     "dev": "node ./scripts/devserver.js"
   },
   "dependencies": {
-    "dc-webapi": "^0.1.0"
+    "dc-webapi":"^0.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
