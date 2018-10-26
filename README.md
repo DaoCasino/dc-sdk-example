@@ -28,9 +28,8 @@ Your dapp core files
 - ./contracts/myDAppGame.sol (contains the basic logic for this sample)
 - dapp/dapp.logic.js
 - dapp/* 
-- dapp/assets/js/tutorial.js
+- dapp/assets/js/tutorial.js (this is where you are supposed to configure your game settings)
 
 
 ## Detailed Documentation
-- https://github.com/DaoCasino/dc-monorepo/tree/development/packages/Documentation/2.%20Developer%20Sandbox
-- https://github.com/DaoCasino/dc-monorepo/edit/development/packages/Documentation/2.%20Developer%20Sandbox/2.3.%20Game%20Dev%20Process.md
+- https://developers.dao.casino/docs
