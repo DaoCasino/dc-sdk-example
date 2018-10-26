@@ -4,12 +4,10 @@
 ### (!) Attention: To avoid conflicts with other testrpcs on your host machine, use *port 1406* 
 ### TESTRPC PORT: 1406
 
-Make sure you have installed [https://docs.docker.com/install/](docker-compose), it is required for the dev environment
-
 ## Requirements
- - docker-compose
- - nodejs (10 recommend)
+ - nodejs (10 or newer)
  - trufflejs (npm i -g truffle)
+ - [https://docs.docker.com/install/](docker-compose) (optional)
 
 
 ## Quick start
@@ -73,7 +71,6 @@ Gas Limit
 7992181
 
 
-## Docs
+## Detailed Documentation
 
-https://github.com/DaoCasino/SDK/wiki/2.1.-Development-Stack
-
+https://github.com/DaoCasino/dc-monorepo/tree/development/packages/Documentation/2.%20Developer%20Sandbox
