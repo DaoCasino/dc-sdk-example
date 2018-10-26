@@ -1,16 +1,16 @@
 
-# DAO.Casino SDK 
+# Using the Sample Game in DAO.Casino SDK 
 
 
 ## Requirements
  - installed DC-CLI
  - npm.js
- - nodejs (10 or newer)
- - trufflejs (npm i -g truffle)
+ - node.js (10 or newer)
+ - truffle.js (npm i -g truffle)
  If you use Windows, call `npm install --global windows-build-tools.` This command installs components necessary for this operation system.
 
 ## Quick start
-1. Clone the repository.
+1. Clone the sample repository:
 ```
 git clone --depth=1 https://github.com/DaoCasino/dc-sdk-sample ./myDapp
 cd ./myDapp
