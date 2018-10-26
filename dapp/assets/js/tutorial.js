@@ -14,14 +14,14 @@ const playerPrivateKeys = {
 }
 
 const WALLET_PWD = "1234"
-;(async () => {
-  const webapi = new DCWebapi({
-    platformId: "DC_sdk",
-    blockchainNetwork: DC_NETWORK
-  })
-  window.webapi = webapi
-  webapi.account.init(WALLET_PWD, playerPrivateKeys[DC_NETWORK])
-})()
+// ;(async () => {
+//   const webapi = new DCWebapi({
+//     platformId: "DC_sdk",
+//     blockchainNetwork: DC_NETWORK
+//   })
+//   window.webapi = webapi
+//   webapi.account.init(WALLET_PWD, playerPrivateKeys[DC_NETWORK])
+// })()
 
 export default new class View {
   // constructor () {
@@ -42,11 +42,28 @@ export default new class View {
   showStep(num) {
     this.root.className = "show-step-" + num
   }
-
   showStep1() {
+    this.button_access = document.getElementById("body-init").style.display =
+      "none"
+    this.isNetworkChecked = false
+    this.networkChoosed = ""
+    const that = this
     document
       .getElementById("choose-network-button")
-      .addEventListener("click", e => console.log(e))
+      .addEventListener("click", e => {
+        console.log("click")
+        const inputs = document
+          .getElementById("choose-network-form")
+          .getElementsByTagName("input")
+        for (let i = 0; i < inputs.length; i++) {
+          if (inputs[i].checked) {
+            document.getElementById("body-init").style.display = "block"
+            that.isNetworkChecked = true
+            that.networkChoosed = inputs[i].value
+            console.log(that.isNetworkChecked, that.networkChoosed)
+          }
+        }
+      })
     this.showStep(1)
     const privkey_input = this.root.querySelector(
       '.step-1 input[name="privkey"]'
@@ -62,30 +79,41 @@ export default new class View {
       }, 7777)
     }
 
-    const btn = this.root.querySelector(".step-1 button")
-    btn.onclick = () => {
-      btn.disabled = true
-      this.root.querySelector(".step-1 .init").style.display = "none"
+    const btn = document
+      .getElementById("init-account-button")
+      .addEventListener("click", e => {
+        console.log(that.isNetworkChecked, that.networkChoosed)
+        if (that.isNetworkChecked && that.networkChoosed) {
+          this.root.querySelector(".step-1 .init").style.display = "none"
 
-      setTimeout(async () => {
-        try {
-          window.localStorage.last_privkey = privkey_input.value
-        } catch (e) {
-          btn.disabled = false
-          this.root.querySelector(".step-1 .init").style.display = "block"
-          alert("invalid key")
-          return
+          setTimeout(async () => {
+            try {
+              const DC_NETWORK = that.networkChoosed
+              console.log(DC_NETWORK)
+              const webapi = new DCWebapi({
+                platformId: "DC_sdk",
+                blockchainNetwork: DC_NETWORK
+              })
+              window.webapi = webapi
+              webapi.account.init(WALLET_PWD, playerPrivateKeys[DC_NETWORK])
+              window.localStorage.last_privkey = playerPrivateKeys[DC_NETWORK]
+            } catch (e) {
+              console.log(e)
+              this.root.querySelector(".step-1 .init").style.display = "block"
+              alert("invalid key")
+              return
+            }
+
+            document.getElementById("acc_info").innerHTML = JSON.stringify(
+              window.webapi.account.address
+            )
+            this.root.querySelector(".step-1").classList.add("initied")
+            setTimeout(() => {
+              this.showStep2()
+            }, 3333)
+          }, 33)
         }
-
-        document.getElementById("acc_info").innerHTML = JSON.stringify(
-          window.webapi.account.address
-        )
-        this.root.querySelector(".step-1").classList.add("initied")
-        setTimeout(() => {
-          this.showStep2()
-        }, 3333)
-      }, 33)
-    }
+      })
   }
 
   showStep2() {

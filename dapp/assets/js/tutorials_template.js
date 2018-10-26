@@ -43,23 +43,29 @@ const template = `<div id="tutorial_app" class="show-step-0">
 
     <!-- init acc -->
     <div class="step step-1">
-      <h2>First you need to init Ethereum account</h2>
+      <h2>First you need to choose Ethereum network</h2>
       <div class="chooseNet">
       <form id="choose-network-form">
+      <input type="radio" name="network" value="ropsten" disabled> Mainnet<br>
         <input type="radio" name="network" value="ropsten"> Ropsten<br>
+        <input type="radio" name="network" value="ropsten" disabled> Kovan<br>
         <input type="radio" name="network" value="rinkeby"> Rinkeby<br>
-        <input type="radio" name="network" value="local"> Local<br> 
+        <input type="radio" name="network" value="local" disabled> Local<br> 
         <button id = "choose-network-button" type="button">choose network</button>
         </form>
       </div>
+      <br>
+      <div id="body-init">
+      <h2>Now init Ethereum account</h2>
       <div class="init">
         <input name="privkey" type="text" placeholder="Insert privatekey" required minlength="66" maxlength="66" />
-        <button>Init Account</button>
+        <button id="init-account-button" >Init Account</button>
       </div>
       <div class="initied">
         <code> window.webapi.account._account</code>
         <p>OK, your account info:</p>
         <pre id="acc_info" style="white-space: inherit"></pre>
+      </div>
       </div>
     </div>
     
