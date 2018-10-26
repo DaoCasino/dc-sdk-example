@@ -45,18 +45,21 @@ const template = `<div id="tutorial_app" class="show-step-0">
     <div class="step step-1">
       <h2>First you need to choose Ethereum network</h2>
       <div class="chooseNet">
-      <form id="choose-network-form">
-      <input type="radio" name="network" value="ropsten" disabled> Mainnet<br>
-        <input type="radio" name="network" value="ropsten"> Ropsten<br>
-        <input type="radio" name="network" value="ropsten" disabled> Kovan<br>
-        <input type="radio" name="network" value="rinkeby"> Rinkeby<br>
-        <input type="radio" name="network" value="local" disabled> Local<br> 
+      <div style="display: flex;flex-direction: column;">
+        <div class="network-variant network-variant-disable"><label class="network-variant-label" style="background: rgb(41, 182, 175)"></label> <span class="network-variant-name">Mainnet</span></div>
+        <div class="network-variant network-variant-disable"><label class="network-variant-label" style="background: rgb(112, 87, 255);"></label> <span class="network-variant-name">Kovan</span></div>
+        <div class="network-variant rinkeby"><label class="network-variant-label" style="background: rgb(246, 195, 67);"></label> <span class="network-variant-name">Rinkeby</span></div>
+        <div class="network-variant ropsten"><label class="network-variant-label" style="background: rgb(255, 74, 141);"></label> <span class="network-variant-name">Ropsten</span></div>
+        <div class="network-variant network-variant-disable"><label class="network-variant-label"></label> <span class="network-variant-name">local(localhost:8545)</span></div>
+      </div>
+      <div>  
         <button id = "choose-network-button" type="button">choose network</button>
-        </form>
+      </div>
+        
       </div>
       <br>
       <div id="body-init">
-      <h2>Now init Ethereum account</h2>
+      <h2>Now insert your Ethereum privacy key</h2>
       <div class="init">
         <input name="privkey" type="text" placeholder="Insert privatekey" required minlength="66" maxlength="66" />
         <button id="init-account-button" >Init Account</button>
