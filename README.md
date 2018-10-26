@@ -17,7 +17,7 @@ cd ./myDapp
 npm i && npm start
 ```
 2. Start the relevant bankroller for the network you want to use (Ropsten, Local, etc).  
-```bankroller-core start <privateKey> [options]```  
+```node ./bin/deamon <privateKey> [options]```  
 where <privateKey> is the private key reserved for bankroller, and [options] defines the blockchain network. 
 
 
