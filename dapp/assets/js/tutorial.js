@@ -16,6 +16,7 @@ const WALLET_PWD = "1234"
 
 export default new class View {
   init() {
+    localStorage.clear()
     const that = this
     document.getElementById("tutorial_mount_point").innerHTML = template
     this.root = document.getElementById("tutorial_app")
@@ -80,7 +81,7 @@ export default new class View {
                 that.DC_NETWORK = that.networkChoosed
                 const webapi = new DCWebapi({
                   platformId: "DC_sdk",
-                  blockchainNetwork: that.networkChoosed
+                  blockchainNetwork: that.DC_NETWORK
                 })
                 window.webapi = webapi
                 webapi.account.init(WALLET_PWD, privkey_input.value)
