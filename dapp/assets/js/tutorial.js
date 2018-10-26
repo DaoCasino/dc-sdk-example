@@ -97,8 +97,12 @@ export default new class View {
         gameLogicFunction: dapp,
         rules: manifest.rules
       })
-
       const log = document.getElementById("log")
+      window.game.on("webapi::status", data => {
+        log.style.display = "block"
+        log.innerHTML += `<p><b>INFO</b>: ${JSON.stringify(data)}</p>`
+      })
+
       log.style.display = "block"
       this.showStep3()
     }

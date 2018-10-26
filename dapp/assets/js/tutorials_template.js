@@ -46,7 +46,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
             import manifest from "../../dapp.manifest.js"
             import DCWebapi from 'dc-webapi'
             </pre>
-        </div>
+          </div>
       </p>
 
       <p>Do not forget read our documentation <a target="_blank" href="https://developers.dao.casino/">https://developers.dao.casino/docs/</a> </p>
