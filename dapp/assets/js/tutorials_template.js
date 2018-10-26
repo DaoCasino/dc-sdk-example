@@ -1,55 +1,37 @@
 const template = `<div id="tutorial_app" class="show-step-0">
     <h1>Basic Dapp flow example </h1>
     <hr>
-
     <!-- intro -->
     <div class="step step-0 intro">
-      <h2>Before youre start</h2>
+      <h2>Before you start</h2>
       <p>
         This "wizard" provide you on basic steps of Dapp lifecycle
         <br>
+        <h3><strong>Our plan</strong></h3>
         <ul>
-        <li>Import the dc-webapi library from the mono repository <code>import { Game, Account } from 'dc-webapi'</code></li>
-          <li>Start with create an object within the "Account" class to manage the account and initialize the Ethereum account
-            <code>
-              <br/>Account window.acc = new Account();
-              <br/>await window.acc.init("1111", "private key")
-            </code>
-          </li>
+          <li>Init account</li>
           <li>Init Dapp 
-          <code>
-          <br/>window.game = new Game({
-            <br/>name: dappManifest.slug,
-            <br/>contract: dappManifest.contract,
-            <br/> account: window.acc,
-            <br/> gameLogicFunction: GameLogic,
-            <br/>rules: dappManifest.rules
-          })
-          </code>
           </li>
-          <li>Start and find bakroller 
-            <code>await window.game.connect({ playerDeposit: 10, gameData: [] })</code>
+          <li>Search for bankroller       
           </li>
           <li>Connect to bankroller 
-            <code>await window.game.start()</code>
           </li>
-          <li>Play 
-            <code>
-              <br/>const gameOneResult = await window.game.play({
-               userBet: 2,
-               gameData: [2],
-               rndOpts:[[10,30],[100,500]]
-               })
-            </code>
+          <li>Play a game
           </li>
           <li>Disconnect 
-            <code>
-              await window.game.disconnect()
-            </code>
           </li>
         </ul>
-        <br>
-        realization in code placed: <code>./dapp/model/app.js</code>
+        <div>
+          <h2><strong>First of all install and import "dc-webapi" library with the game logic and game metadata </strong></h2>
+          <br/><code>npm install dc-webapi</code> 
+          <br/>
+            <pre>
+
+            import { dapp } from "../../dapp.logic.js"
+            import manifest from "../../dapp.manifest.js"
+            import DCWebapi from 'dc-webapi'
+            </pre>
+          </div>
       </p>
 
       <p>Do not forget read our documentation <a target="_blank" href="https://developers.dao.casino/">https://developers.dao.casino/docs/</a> </p>
@@ -61,14 +43,14 @@ const template = `<div id="tutorial_app" class="show-step-0">
 
     <!-- init acc -->
     <div class="step step-1">
-      <h2>First you need to send ethereum account in DCLib </h2>
+      <h2>First you need to init Ethereum account</h2>
       
       <div class="init">
         <input name="privkey" type="text" placeholder="Insert privatekey" required minlength="66" maxlength="66" />
         <button>Init Account</button>
       </div>
       <div class="initied">
-        <code>window.acc._Eth._account</code>
+        <code> window.webapi.account._account</code>
         <p>OK, your account info:</p>
         <pre id="acc_info" style="white-space: inherit"></pre>
       </div>
@@ -76,47 +58,75 @@ const template = `<div id="tutorial_app" class="show-step-0">
     
     <!-- init Dapp -->
     <div class="step step-2">
-      <h2>Second - init your Dapp</h2>
+    <h2>Init dc-webapi</h2>
+    <p>Code Example
+    <pre>
+    
+    const WALLET_PWD = "1234"
+    (async () => {
+      const webapi = new DCWebapi({
+        platformId: "DC_sdk",
+        blockchainNetwork: DC_NETWORK
+      })
+      window.webapi = webapi
+      window.webapi.account.init(WALLET_PWD, playerPrivateKeys[DC_NETWORK])
+    })()
+    </pre></p>
+      <h2>Init your Dapp</h2>
       
-      <p>Code Example<pre>window.game = new Game({
-    name: dappManifest.slug,
-    contract: dappManifest.contract,
-    account: window.acc,
-    gameLogicFunction: GameLogic,
-    rules: dappManifest.rules
-  })
+      <p>
+      <pre> window.game = window.webapi.createGame({
+        name: manifest.slug,
+        contract: manifest.getContract(DC_NETWORK),
+        gameLogicFunction: dapp,
+        rules: manifest.rules
+      })
       </pre></p>
 
 
       <p>See files:
         <br>
-        <b>dapp/config/dapp.contract.js</b> - contract address and ABI, generates automaicaly when <code>truffle migrate</code>. In <code>package.json</code> you can find paths
-  <pre>"paths": {
-    "dapp": {
-      "contract_abi": "./dapp/config/dapp.contract.json"
-    },
-    "truffle": {
-      "contracts_directory": "./contracts",
-      "migrations_directory": "./migrations",
-      "contracts_build_directory": "./dapp/config/contracts/"
+        <b>dapp/dapp.logic.js</b> - contract address and ABI. This is core dapp/game logic constructor for client and bankroller. 
+  <pre>
+  
+  function dapp () {
+    return {
+      play: function (userBet, gameData, randoms) {
+        const userNum = gameData[0]
+        const randomNum = randoms[0]
+  
+        let profit = -userBet
+  
+        // if user win
+        if (userNum * 1 === randomNum * 1) {
+          profit = userBet * 2 - userBet
+        }
+  
+        // return player profit
+        return profit
+      }
     }
-  },
+  }
+  export { dapp }
         </pre>
 
         <br>
         <br>
         
-        <b>dapp/dapp.logic.js</b> - this is core dapp/game logic constructor for client and bankroller.
-        Reqired to return a one function, called <code>Game</code>
+        <b>dapp/dapp.logic.js</b> - Reqired to paste you custom logic into the body of the dapp.logic.js function.
         <pre>
+        
+        function dapp () {
           return {
-            Game: yourFunction
+            play: yourFunction
           }
+        }
+        export { dapp }
         </pre>
         <br>
         <br>
         <b>dapp/dapp.manifest.js</b> - this is a config file for bankroller.
-        Whit dapp.logis.js automoved when changed in bankroller docker container 
+        Whith metadata of the game
       </p>
 
       <button class="next">Init Dapp</button>
@@ -155,7 +165,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
       </label>
       <br>
 
-      <table class="play-log">
+      <table id="play-table-results" class="play-log">
         <caption>play log:</caption>
         <thead><tr>
           <th>bet</th>

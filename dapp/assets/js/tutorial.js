@@ -8,7 +8,7 @@ import DCWebapi from "dc-webapi"
 
 const DC_NETWORK = "ropsten"
 const playerPrivateKeys = {
-  ropsten: "0x598ed0ea02d56414a538c8a3a60cda10900c3492a396d3dde0822e80bba46dae",
+  ropsten: "0xf67dfe6039ee029ae771d7e2da5a4324532ecc62cb59a292efc9cf49fd1b549e",
   rinkeby: "0x598ed0ea02d56414a538c8a3a60cda10900c3492a396d3dde0822e80bba46dae",
   local: ""
 }
@@ -28,22 +28,22 @@ export default new class View {
 
   // }
 
-  init() {
+  init () {
     document.getElementById("tutorial_mount_point").innerHTML = template
     this.root = document.getElementById("tutorial_app")
     this.setEvents()
   }
 
-  setEvents() {
+  setEvents () {
     this.root.querySelector(".step-0 button").onclick = () => {
       this.showStep1()
     }
   }
-  showStep(num) {
+  showStep (num) {
     this.root.className = "show-step-" + num
   }
 
-  showStep1() {
+  showStep1 () {
     this.showStep(1)
     const privkey_input = this.root.querySelector(
       '.step-1 input[name="privkey"]'
@@ -85,7 +85,7 @@ export default new class View {
     }
   }
 
-  showStep2() {
+  showStep2 () {
     this.showStep(2)
     const btn = this.root.querySelector(".step-2 button")
     btn.onclick = async () => {
@@ -97,13 +97,17 @@ export default new class View {
         gameLogicFunction: dapp,
         rules: manifest.rules
       })
-
       const log = document.getElementById("log")
+      window.game.on("webapi::status", data => {
+        log.style.display = "block"
+        log.innerHTML += `<p><b>INFO</b>: ${JSON.stringify(data)}</p>`
+      })
+
       log.style.display = "block"
       this.showStep3()
     }
   }
-  showStep3() {
+  showStep3 () {
     this.showStep(3)
 
     const btn = this.root.querySelector(".step-3 button")
@@ -135,7 +139,7 @@ export default new class View {
     }
   }
 
-  showStep4(connection) {
+  showStep4 (connection) {
     this.showStep(4)
 
     // const table = document.querySelector('.step-4 table.play-log tbody')
@@ -158,36 +162,55 @@ export default new class View {
         '.step-4 input[name="choice"]:checked'
       ).value
       try {
-        await window.game.play({
+        const result = await window.game.play({
           userBet: bet,
           gameData: [choice],
           rndOpts: [[1, 3]]
         })
+        let td1 = document.createElement("td")
+        let td2 = document.createElement("td")
+        let td3 = document.createElement("td")
+        let td4 = document.createElement("td")
+        let td5 = document.createElement("td")
+        let td6 = document.createElement("td")
+        let tr = document.createElement("tr")
+        document
+          .getElementById("play-table-results")
+          .getElementsByTagName("tbody")[0]
+          .appendChild(tr)
+
+        td3.innerHTML = 0
+
+        tr.appendChild(td1)
+        tr.appendChild(td2)
+        tr.appendChild(td3)
+        tr.appendChild(td4)
+        tr.appendChild(td5)
+        tr.appendChild(td6)
+
+        for (let i in result) {
+          switch (i) {
+            case "balances":
+              td6.innerHTML = `player ${result[i].player} 
+                               bankroller ${result[i].bankroller}`
+              break
+            case "params":
+              td1.innerHTML = result[i].userBet
+              td2.innerHTML = result[i].gameData[0]
+              break
+            case "profit":
+              td5.innerHTML = result[i]
+              break
+            case "randomNums":
+              td4.innerHTML = result[i][0]
+              break
+          }
+        }
+        // console.log(result)
       } catch (e) {
         console.error(e)
       }
-      // const play = ''
-      // const play = await App.play(bet, choice)
       console.info("Play result:")
-      // console.info(play)
-      // console.table(play.bankroller.result)
-
-      // const r = play.bankroller.result
-      // table.insertAdjacentHTML(
-      //   'beforeend',
-      //   `
-      //   <tr>
-      //     <td>${r.user_bet}</td>
-      //     <td>${r.user_num}</td>
-      //     <td><div class="t" title="${r.random_hash}">${
-      //     r.random_hash
-      //   }</div></td>
-      //     <td>${r.random_num}</td>
-      //     <td>${Math.ceil(r.profit * 0.000000000000000001)}</td>
-      //     <td>${r.balance}</td>
-      //   </tr>
-      // `
-      // )
 
       endBtn.disabled = false
       if (playCnt++ > 3) {
@@ -201,12 +224,12 @@ export default new class View {
     }
   }
 
-  showStep5() {
+  showStep5 () {
     this.showStep(5)
     this.root.querySelector(".step-5 button").onclick = this.disconnect
   }
 
-  async disconnect() {
+  async disconnect () {
     const btn = document.querySelector(".step-5 button")
     btn.disabled = true
     this.root.querySelector(".step-5 .close-block").style.display = "none"
@@ -217,7 +240,6 @@ export default new class View {
       console.info("Disconnect result:", "error")
     }
     const disconnect = "success"
-    // const disconnect = await App.endGame()
     console.info("Disconnect result:", disconnect)
     this.root.querySelector(".step-5 #close_result").innerHTML = JSON.stringify(
       disconnect
