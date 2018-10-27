@@ -1,5 +1,3 @@
-/* global alert */
-
 import "../style/tutorial.less"
 import { dapp } from "../../dapp.logic.js"
 import manifest from "../../dapp.manifest.js"
