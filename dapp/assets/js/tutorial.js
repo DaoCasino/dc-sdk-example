@@ -1,5 +1,3 @@
-/* global alert */
-
 import "../style/tutorial.less"
 import { dapp } from "../../dapp.logic.js"
 import manifest from "../../dapp.manifest.js"
@@ -13,7 +11,7 @@ const playerPrivateKeys = {
 }
 
 const WALLET_PWD = "1234"
-
+const DC_ID_PLATFORM = "DC_sdk"
 export default new class View {
   init() {
     localStorage.clear()
@@ -21,24 +19,33 @@ export default new class View {
     document.getElementById("tutorial_mount_point").innerHTML = template
     this.root = document.getElementById("tutorial_app")
     this.setEvents()
+    //get array of networks
     const enableVariants = document.getElementsByClassName(
       "network-variant-enable"
     )
+    //set eventHandler to each
     for (let i = 0; i < enableVariants.length; i++) {
       enableVariants[i].addEventListener("click", e => {
         document.getElementById("body-init").style.display = "block"
         that.isNetworkChecked = true
         that.networkChoosed = e.target.innerHTML.trim().toLowerCase()
-        this.root.querySelector('.step-1 input[name="privkey"]').value =
+        that.root.querySelector('.step-1 input[name="privkey"]').value =
           playerPrivateKeys[that.networkChoosed]
+        that.setNetworkIndex(that.networkChoosed)
       })
     }
+    //set default value to Platform_id
+    document.getElementById("id-platform-input").value = DC_ID_PLATFORM
   }
 
   setEvents() {
     this.root.querySelector(".step-0 button").onclick = () => {
       this.showStep1()
     }
+  }
+  setNetworkIndex(network) {
+    document.getElementById("network-index").innerHTML = network
+    document.getElementById("network-index-container").style.opacity = 1
   }
   showStep(num) {
     this.root.className = "show-step-" + num
@@ -56,39 +63,45 @@ export default new class View {
 
     if (window.localStorage.last_privkey) {
       privkey_input.value = window.localStorage.last_privkey
-    } else {
-      setTimeout(() => {
-        if (!privkey_input.value.length < 66) {
-          alert("Private key is too low repeat again")
-          this.showStep1()
-          // privkey_input.value = playerPrivateKeys[that.networkChoosed]
-        }
-      }, 7777)
     }
 
+    let inputedPlatformId
+    document
+      .getElementById("id-platform-button")
+      .addEventListener("click", () => {
+        inputedPlatformId = document.getElementById("id-platform-input").value
+      })
     const btn = document
       .getElementById("init-account-button")
       .addEventListener("click", e => {
         if (that.isNetworkChecked && that.networkChoosed) {
+          if (privkey_input.value[0] !== 0 && privkey_input.value[1] !== "x") {
+            const fixedPrivate = "0x" + privkey_input.value
+            privkey_input.value = fixedPrivate
+          }
           if (privkey_input.value.length < 66) {
             alert("Private key is too low repeat again")
             this.showStep1()
-            // privkey_input.value = playerPrivateKeys[that.networkChoosed]
           } else {
             this.root.querySelector(".step-1 .init").style.display = "none"
             setTimeout(async () => {
               try {
                 that.DC_NETWORK = that.networkChoosed
-                const webapi = await new DCWebapi({
-                  platformId: "DC_sdk",
+                const platform_id = inputedPlatformId
+                  ? inputedPlatformId
+                  : DC_ID_PLATFORM
+                const inputedPrivKey = privkey_input.value
+
+                const webapi = new DCWebapi({
+                  platformId: platform_id,
                   blockchainNetwork: that.DC_NETWORK
                 }).start()
                 window.webapi = webapi
-                webapi.account.init(WALLET_PWD, privkey_input.value)
-                window.localStorage.last_privkey = privkey_input.value
+                webapi.account.init(WALLET_PWD, inputedPrivKey)
+                window.localStorage.last_privkey = inputedPrivKey
               } catch (e) {
                 console.log(e)
-                this.root.querySelector(".step-1 .init").style.display = "block"
+                that.root.querySelector(".step-1 .init").style.display = "block"
                 alert("invalid key")
                 that.root.querySelector('.step-1 input[name="privkey"]').value =
                   playerPrivateKeys[that.DC_NETWORK]

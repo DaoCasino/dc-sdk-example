@@ -1,5 +1,6 @@
 const template = `<div id="tutorial_app" class="show-step-0">
     <h1>Basic Dapp flow example </h1>
+    <div id="network-index-container"><span>current Ethereum network:</span><span id="network-index"></span></div>
     <hr>
     <!-- intro -->
     <div class="step step-0 intro">
@@ -52,6 +53,14 @@ const template = `<div id="tutorial_app" class="show-step-0">
         <div class="network-variant network-variant-enable"><label class="network-variant-label" style="background: rgb(255, 74, 141);"></label> <span class="network-variant-name">Ropsten</span></div>
         <div class="network-variant network-variant-disable"><label class="network-variant-label"></label> <span class="network-variant-name">local(localhost:8545)</span></div>
       </div>   
+      </div>
+      <br>
+      <div>
+        <form id="id-platform-form">
+          <input type="text" id="id-platform-input" placeholder="input Platform_id">
+          <button type="button" id="id-platform-button">set</button>
+        </form>
+        <span>Platform_id must be the same with Platform_id on bankroller</span>
       </div>
       <br>
       <div id="body-init">
