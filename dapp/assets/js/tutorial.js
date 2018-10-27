@@ -29,8 +29,9 @@ export default new class View {
         document.getElementById("body-init").style.display = "block"
         that.isNetworkChecked = true
         that.networkChoosed = e.target.innerHTML.trim().toLowerCase()
-        this.root.querySelector('.step-1 input[name="privkey"]').value =
+        that.root.querySelector('.step-1 input[name="privkey"]').value =
           playerPrivateKeys[that.networkChoosed]
+        that.setNetworkIndex(that.networkChoosed)
       })
     }
   }
@@ -39,6 +40,10 @@ export default new class View {
     this.root.querySelector(".step-0 button").onclick = () => {
       this.showStep1()
     }
+  }
+  setNetworkIndex(network) {
+    document.getElementById("network-index").innerHTML = network
+    document.getElementById("network-index-container").style.opacity = 1
   }
   showStep(num) {
     this.root.className = "show-step-" + num
@@ -56,14 +61,6 @@ export default new class View {
 
     if (window.localStorage.last_privkey) {
       privkey_input.value = window.localStorage.last_privkey
-    } else {
-      setTimeout(() => {
-        if (!privkey_input.value.length < 66) {
-          alert("Private key is too low repeat again")
-          this.showStep1()
-          // privkey_input.value = playerPrivateKeys[that.networkChoosed]
-        }
-      }, 7777)
     }
 
     const btn = document
