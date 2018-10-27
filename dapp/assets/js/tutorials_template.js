@@ -76,10 +76,10 @@ const template = `<div id="tutorial_app" class="show-step-0">
     
     const WALLET_PWD = "1234"
     (async () => {
-      const webapi = new DCWebapi({
+      const webapi = await new DCWebapi({
         platformId: "DC_sdk",
         blockchainNetwork: DC_NETWORK
-      })
+      }).start()
       window.webapi = webapi
       window.webapi.account.init(WALLET_PWD, playerPrivateKeys[DC_NETWORK])
     })()

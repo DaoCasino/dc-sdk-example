@@ -79,10 +79,10 @@ export default new class View {
             setTimeout(async () => {
               try {
                 that.DC_NETWORK = that.networkChoosed
-                const webapi = new DCWebapi({
+                const webapi = await new DCWebapi({
                   platformId: "DC_sdk",
                   blockchainNetwork: that.DC_NETWORK
-                })
+                }).start()
                 window.webapi = webapi
                 webapi.account.init(WALLET_PWD, privkey_input.value)
                 window.localStorage.last_privkey = privkey_input.value
