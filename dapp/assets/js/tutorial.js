@@ -67,6 +67,10 @@ export default new class View {
       .getElementById("init-account-button")
       .addEventListener("click", e => {
         if (that.isNetworkChecked && that.networkChoosed) {
+          if (privkey_input.value[0] !== 0 && privkey_input.value[1] !== "x") {
+            const fixedPrivate = "0x" + privkey_input.value
+            privkey_input.value = fixedPrivate
+          }
           if (privkey_input.value.length < 66) {
             alert("Private key is too low repeat again")
             this.showStep1()

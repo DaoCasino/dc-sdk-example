@@ -1,6 +1,6 @@
 const template = `<div id="tutorial_app" class="show-step-0">
     <h1>Basic Dapp flow example </h1>
-    <div id="network-index-container"><span>current Ethereum network</span><span id="network-index"></span></div>
+    <div id="network-index-container"><span>current Ethereum network:</span><span id="network-index"></span></div>
     <hr>
     <!-- intro -->
     <div class="step step-0 intro">
