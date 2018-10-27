@@ -55,6 +55,14 @@ const template = `<div id="tutorial_app" class="show-step-0">
       </div>   
       </div>
       <br>
+      <div>
+        <form id="id-platform-form">
+          <input type="text" id="id-platform-input" placeholder="input Platform_id">
+          <button type="button" id="id-platform-button">set</button>
+        </form>
+        <span>Platform_id must be the same with Platform_id on bankroller</span>
+      </div>
+      <br>
       <div id="body-init">
       <h2>Now insert your Ethereum privacy key</h2>
       <div class="init">

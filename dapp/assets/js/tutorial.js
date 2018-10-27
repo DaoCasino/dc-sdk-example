@@ -13,7 +13,7 @@ const playerPrivateKeys = {
 }
 
 const WALLET_PWD = "1234"
-
+const DC_ID_PLATFORM = "DC_sdk"
 export default new class View {
   init() {
     localStorage.clear()
@@ -21,9 +21,11 @@ export default new class View {
     document.getElementById("tutorial_mount_point").innerHTML = template
     this.root = document.getElementById("tutorial_app")
     this.setEvents()
+    //get array of networks
     const enableVariants = document.getElementsByClassName(
       "network-variant-enable"
     )
+    //set eventHandler to each
     for (let i = 0; i < enableVariants.length; i++) {
       enableVariants[i].addEventListener("click", e => {
         document.getElementById("body-init").style.display = "block"
@@ -34,6 +36,8 @@ export default new class View {
         that.setNetworkIndex(that.networkChoosed)
       })
     }
+    //set default value to Platform_id
+    document.getElementById("id-platform-input").value = DC_ID_PLATFORM
   }
 
   setEvents() {
@@ -63,6 +67,12 @@ export default new class View {
       privkey_input.value = window.localStorage.last_privkey
     }
 
+    let inputedPlatformId
+    document
+      .getElementById("id-platform-button")
+      .addEventListener("click", () => {
+        inputedPlatformId = document.getElementById("id-platform-input").value
+      })
     const btn = document
       .getElementById("init-account-button")
       .addEventListener("click", e => {
@@ -74,22 +84,26 @@ export default new class View {
           if (privkey_input.value.length < 66) {
             alert("Private key is too low repeat again")
             this.showStep1()
-            // privkey_input.value = playerPrivateKeys[that.networkChoosed]
           } else {
             this.root.querySelector(".step-1 .init").style.display = "none"
             setTimeout(async () => {
               try {
                 that.DC_NETWORK = that.networkChoosed
+                const platform_id = inputedPlatformId
+                  ? inputedPlatformId
+                  : DC_ID_PLATFORM
+                const inputedPrivKey = privkey_input.value
+
                 const webapi = new DCWebapi({
-                  platformId: "DC_sdk",
+                  platformId: platform_id,
                   blockchainNetwork: that.DC_NETWORK
                 })
                 window.webapi = webapi
-                webapi.account.init(WALLET_PWD, privkey_input.value)
-                window.localStorage.last_privkey = privkey_input.value
+                webapi.account.init(WALLET_PWD, inputedPrivKey)
+                window.localStorage.last_privkey = inputedPrivKey
               } catch (e) {
                 console.log(e)
-                this.root.querySelector(".step-1 .init").style.display = "block"
+                that.root.querySelector(".step-1 .init").style.display = "block"
                 alert("invalid key")
                 that.root.querySelector('.step-1 input[name="privkey"]').value =
                   playerPrivateKeys[that.DC_NETWORK]
