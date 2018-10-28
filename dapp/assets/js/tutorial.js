@@ -136,10 +136,10 @@ export default new class View {
         gameLogicFunction: dapp,
         rules: manifest.rules
       })
-      const log = document.getElementById("log")
+      this.log = document.getElementById("log")
       window.game.on("webapi::status", data => {
-        log.style.display = "block"
-        log.innerHTML += `<p><b>INFO</b>: ${JSON.stringify(data)}</p>`
+        this.log.style.display = "block"
+        this.log.innerHTML += `<p><b>INFO</b>: ${JSON.stringify(data)}</p>`
       })
 
       log.style.display = "block"
@@ -169,9 +169,10 @@ export default new class View {
         })
       } catch (e) {
         this.setSpinnerStatus("none")
+        this.log.innerHTML += `<p><b>ERROR</b>: ${"Can't connect, please repeat..."}</p>`
         btn.disabled = false
         console.error(e)
-        console.warn("Cant connect, please repeat...")
+        console.warn("Can't connect, please repeat...")
         return
       }
       this.setSpinnerStatus("none")
@@ -252,6 +253,7 @@ export default new class View {
         // console.log(result)
       } catch (e) {
         this.setSpinnerStatus("none")
+        this.log.innerHTML += `<p><b>ERROR</b>: ${JSON.stringify(e)}</p>`
         console.error(e)
       }
       console.info("Play result:")
@@ -274,16 +276,20 @@ export default new class View {
   }
 
   async disconnect() {
+    this.setSpinnerStatus("block")
     const btn = document.querySelector(".step-5 button")
     btn.disabled = true
     this.root.querySelector(".step-5 .close-block").style.display = "none"
     try {
       await window.game.disconnect()
     } catch (e) {
+      this.setSpinnerStatus("none")
+      this.log.innerHTML += `<p><b>ERROR</b>: ${"disconnect: error"}</p>`
       console.error(e)
       console.info("Disconnect result:", "error")
     }
     const disconnect = "success"
+    this.log.innerHTML += `<p><b>INFO</b>: Disconnect result: success</p>`
     console.info("Disconnect result:", disconnect)
     this.root.querySelector(".step-5 #close_result").innerHTML = JSON.stringify(
       disconnect
