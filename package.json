@@ -15,9 +15,7 @@
     "orientation": "portrait"
   },
   "scripts": {
-    "start": "sh run.sh",
-    "start:local": "sh run.sh local ",
-    "dev": "node ./scripts/devserver.js"
+    "start": "node ./scripts/devserver.js"
   },
   "dependencies": {
     "dc-webapi":"^0.1.0"
