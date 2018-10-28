@@ -15,7 +15,7 @@
     "orientation": "portrait"
   },
   "scripts": {
-    "start:ropsten": "sh run.sh ropsten ",
+    "start": "sh run.sh",
     "start:local": "sh run.sh local ",
     "dev": "node ./scripts/devserver.js"
   },
