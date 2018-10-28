@@ -1,19 +1,18 @@
-'use strict'
-const autoprefixer = require('autoprefixer')
-const path = require('path')
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin')
-const eslintFormatter = require('react-dev-utils/eslintFormatter')
-const fileWatcher = require('extra-watch-webpack-plugin')
+"use strict"
+const autoprefixer = require("autoprefixer")
+const path = require("path")
+const webpack = require("webpack")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
+const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin")
+const WatchMissingNodeModulesPlugin = require("react-dev-utils/WatchMissingNodeModulesPlugin")
+const fileWatcher = require("extra-watch-webpack-plugin")
 // const ModuleScopePlugin             = require('react-dev-utils/ModuleScopePlugin')
 
-const paths = require('./paths')
+const paths = require("./paths")
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
-const publicPath = '/'
+const publicPath = "/"
 
 // `publicUrl` is just like `publicPath`, but we will provide it to our app
 // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
@@ -25,7 +24,7 @@ const publicPath = '/'
 let front_dev_config = {
   // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
   // See the discussion in https://github.com/facebookincubator/create-react-app/issues/343.
-  devtool: 'cheap-module-source-map',
+  devtool: "cheap-module-source-map",
 
   // These are the "entry points" to our application.
   // This means they will be the "root" imports that are included in JS bundle.
@@ -41,10 +40,10 @@ let front_dev_config = {
     // the line below with these two lines if you prefer the stock client:
     // require.resolve('webpack-dev-server/client') + '?/',
     // require.resolve('webpack/hot/dev-server'),
-    require.resolve('react-dev-utils/webpackHotDevClient'),
+    require.resolve("react-dev-utils/webpackHotDevClient"),
 
     // We ship a few polyfills by default:
-    require.resolve('./polyfills'),
+    require.resolve("./polyfills"),
 
     // Errors should be considered fatal in development
     // require.resolve('react-error-overlay'),
@@ -66,10 +65,10 @@ let front_dev_config = {
     // This does not produce a real file. It's just the virtual path that is
     // served by WebpackDevServer in development. This is the JS bundle
     // containing code from all our entry points, and the Webpack runtime.
-    filename: 'static/js/bundle.js',
+    filename: "static/js/bundle.js",
 
     // There are also additional JS chunk files if you use code splitting.
-    chunkFilename: 'static/js/[name].chunk.js',
+    chunkFilename: "static/js/[name].chunk.js",
 
     // This is the URL that app is served from. We use "/" in development.
     publicPath: publicPath,
@@ -80,7 +79,7 @@ let front_dev_config = {
   },
 
   resolve: {
-    extensions: ['.js', '.json'],
+    extensions: [".js", ".json"],
     alias: {},
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -92,23 +91,9 @@ let front_dev_config = {
     ]
   },
   module: {
-    strictExportPresence: true,
     rules: [
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
-      {
-        test: /\.(js)$/,
-        enforce: 'pre',
-        use: [
-          {
-            options: {
-              formatter: eslintFormatter
-            },
-            loader: require.resolve('eslint-loader')
-          }
-        ],
-        include: paths.appSrc
-      },
 
       // ** ADDING/UPDATING LOADERS **
       // The "file" loader handles all assets unless explicitly excluded.
@@ -135,9 +120,9 @@ let front_dev_config = {
           /\.jpe?g$/,
           /\.png$/
         ],
-        loader: require.resolve('file-loader'),
+        loader: require.resolve("file-loader"),
         options: {
-          name: 'static/media/[name].[hash:8].[ext]'
+          name: "static/media/[name].[hash:8].[ext]"
         }
       },
 
@@ -149,7 +134,7 @@ let front_dev_config = {
       //  this.root.innerHTML = require('../../icons/' + this.opts.src)
       {
         test: /\.svg$/,
-        loader: 'svg-inline-loader'
+        loader: "svg-inline-loader"
       },
 
       // "url" loader works like "file" loader except that it embeds assets
@@ -157,10 +142,10 @@ let front_dev_config = {
       // A missing `test` is equivalent to a match.
       {
         test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-        loader: require.resolve('url-loader'),
+        loader: require.resolve("url-loader"),
         options: {
           limit: 10000,
-          name: 'static/media/[name].[hash : 8].[ext]'
+          name: "static/media/[name].[hash : 8].[ext]"
         }
       },
 
@@ -168,8 +153,8 @@ let front_dev_config = {
       {
         test: /\.(js)$/,
         include: paths.appSrc,
-        enforce: 'post',
-        loader: require.resolve('babel-loader'),
+        enforce: "post",
+        loader: require.resolve("babel-loader"),
         options: {
           // This is a feature of `babel-loader` for webpack (not Babel itself).
           // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -186,27 +171,27 @@ let front_dev_config = {
       {
         test: /\.css$/,
         use: [
-          require.resolve('style-loader'),
+          require.resolve("style-loader"),
           {
-            loader: require.resolve('css-loader'),
+            loader: require.resolve("css-loader"),
             options: {
               importLoaders: 1
             }
           },
           {
-            loader: require.resolve('postcss-loader'),
+            loader: require.resolve("postcss-loader"),
             options: {
-              ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
+              ident: "postcss", // https://webpack.js.org/guides/migrating/#complex-options
               plugins: () => [
-                require('postcss-flexbugs-fixes'),
+                require("postcss-flexbugs-fixes"),
                 autoprefixer({
                   browsers: [
-                    '>1%',
-                    'last 4 versions',
-                    'Firefox ESR',
-                    'not ie < 9' // React doesn't support IE8 anyway
+                    ">1%",
+                    "last 4 versions",
+                    "Firefox ESR",
+                    "not ie < 9" // React doesn't support IE8 anyway
                   ],
-                  flexbox: 'no-2009'
+                  flexbox: "no-2009"
                 })
               ]
             }
@@ -222,12 +207,12 @@ let front_dev_config = {
   plugins: [
     new fileWatcher({
       files: [paths.DappManifest, paths.DappLogic],
-      dirs: ['dapp/config']
+      dirs: ["dapp/config"]
     }),
 
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
-      inject: 'head',
+      inject: "head",
       template: paths.appHtml
     }),
 
@@ -256,9 +241,9 @@ let front_dev_config = {
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
   node: {
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty'
+    fs: "empty",
+    net: "empty",
+    tls: "empty"
   },
 
   // Turn off performance hints during development because we don't do any
@@ -287,11 +272,11 @@ front_dev_config.module.rules.push({
   test: /\.less$/,
   use: [
     // creates style nodes from JS strings
-    { loader: 'style-loader' },
+    { loader: "style-loader" },
     // translates CSS into CommonJS
-    { loader: 'css-loader' },
+    { loader: "css-loader" },
     // compiles Less to CSS
-    { loader: 'less-loader' }
+    { loader: "less-loader" }
   ]
 })
 
@@ -299,11 +284,11 @@ front_dev_config.module.rules.push({
   test: /\.styl$/,
   use: [
     // creates style nodes from JS strings
-    { loader: 'style-loader' },
+    { loader: "style-loader" },
     // translates CSS into CommonJS
-    { loader: 'css-loader' },
+    { loader: "css-loader" },
     // compiles stylus
-    { loader: 'stylus-loader' }
+    { loader: "stylus-loader" }
   ]
 })
 
