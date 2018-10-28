@@ -50,6 +50,9 @@ export default new class View {
   showStep(num) {
     this.root.className = "show-step-" + num
   }
+  setSpinnerStatus(status) {
+    document.getElementById("loader-spinner").style.display = status
+  }
   showStep1() {
     this.button_access = document.getElementById("body-init").style.display =
       "none"
@@ -148,6 +151,7 @@ export default new class View {
 
     const btn = this.root.querySelector(".step-3 button")
     btn.onclick = async () => {
+      this.setSpinnerStatus("block")
       btn.disabled = true
       const deposit = this.root.querySelector('.step-3 input[name="deposit"]')
         .value
@@ -164,11 +168,13 @@ export default new class View {
           gameData: [0, 0]
         })
       } catch (e) {
+        this.setSpinnerStatus("none")
         btn.disabled = false
         console.error(e)
         console.warn("Cant connect, please repeat...")
         return
       }
+      this.setSpinnerStatus("none")
       connection = "success"
       console.info("Connect result: success")
       this.showStep4(connection)
@@ -190,6 +196,7 @@ export default new class View {
 
     const btn = this.root.querySelector(".step-4 button.play")
     btn.onclick = async () => {
+      this.setSpinnerStatus("block")
       btn.disabled = true
       btn.innerHTML = "wait..."
 
@@ -244,6 +251,7 @@ export default new class View {
         }
         // console.log(result)
       } catch (e) {
+        this.setSpinnerStatus("none")
         console.error(e)
       }
       console.info("Play result:")

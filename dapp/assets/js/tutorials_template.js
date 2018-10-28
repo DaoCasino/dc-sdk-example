@@ -1,6 +1,21 @@
+import emptyCircle from "../images/emptyCircle.png"
+import figure from "../images/figure.png"
+import emptyTriangle from "../images/emptyTriangle.png"
+import filledTriangle from "../images/filledTriangle.png"
 const template = `<div id="tutorial_app" class="show-step-0">
     <h1>Basic Dapp flow example </h1>
     <div id="network-index-container"><span>current Ethereum network:</span><span id="network-index"></span></div>
+    <div style="display:none" id="loader-spinner"class="loaders-container">
+    <div class="container">
+     <div class="switchbox">
+       <div class="switch-horisontal"><img src=${emptyCircle} width="15px" height="15px"></div>
+       <div class="switch-horisontal"><img src=${emptyTriangle} width="15px" height="15px"></div>
+       <div class="switch-vertical"><img src=${filledTriangle} width="15px" height="15px"></div>
+       <div class="switch-vertical"><img src=${figure} width="15px" height="15px"></div>
+     </div>
+     </div>
+   </div>
+    
     <hr>
     <!-- intro -->
     <div class="step step-0 intro">
@@ -23,7 +38,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
           </li>
         </ul>
         <div>
-          <h2><strong>First of all install and import "dc-webapi" library with the game logic and game metadata </strong></h2>
+          <h2><strong>First of all install and import "dc-webapi" library with the game logic and game metadata </strong></h2>  
           <br/><code>npm install dc-webapi</code> 
           <br/>
             <pre>
