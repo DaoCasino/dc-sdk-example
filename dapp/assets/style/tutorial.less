@@ -1,13 +1,38 @@
+@font-face {
+  font-family: "monserat-bold";
+  src: url(./fonts/Montserrat-Bold.ttf);
+}
+@font-face {
+  font-family: "monserat-medium";
+  src: url(./fonts/Montserrat-Medium.ttf);
+}
+@font-face {
+  font-family: "roboto-regular";
+  src: url(./fonts/Roboto-Regular.ttf);
+}
 html,
 body {
   background: #222;
-  font-family: sans-serif;
   font-size: 14px;
   font-weight: 200;
   letter-spacing: 0.2px;
 
   color: #ccc;
   caret-color: #fff;
+}
+h1 {
+  font-family: "monserat-bold";
+}
+h2,
+h3,
+h4 {
+  font-family: "monserat-medium";
+}
+div,
+span,
+label,
+button {
+  font-family: "roboto-regular";
 }
 .network-variant {
   display: flex;
