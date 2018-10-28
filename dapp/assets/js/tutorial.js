@@ -7,9 +7,10 @@ import DCWebapi from "dc-webapi"
 const playerPrivateKeys = {
   ropsten: "0xf67dfe6039ee029ae771d7e2da5a4324532ecc62cb59a292efc9cf49fd1b549e",
   rinkeby: "0x3F8B1B2FC40E744DA0D5D748654E19C5018CC2D43E1FD3EF9FD89E6F7FC652A0",
-  local: "0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f"
+  local: "0x20dbac4b6dc2f8a663b966ccb3e1dcad7f1d74a277e6b6d3fb7761da06c3ce93"
 }
 
+console.log(manifest)
 const WALLET_PWD = "1234"
 const DC_ID_PLATFORM = "DC_sdk"
 export default new class View {
@@ -49,6 +50,9 @@ export default new class View {
   }
   showStep(num) {
     this.root.className = "show-step-" + num
+  }
+  setSpinnerStatus(status) {
+    document.getElementById("loader-spinner").style.display = status
   }
   showStep1() {
     this.button_access = document.getElementById("body-init").style.display =
@@ -91,13 +95,12 @@ export default new class View {
                   ? inputedPlatformId
                   : DC_ID_PLATFORM
                 const inputedPrivKey = privkey_input.value
-                console.log(platform_id, that.DC_NETWORK)
                 const webapi = await new DCWebapi({
                   platformId: platform_id,
                   blockchainNetwork: that.DC_NETWORK
                 }).start()
                 window.webapi = webapi
-                webapi.account.init(WALLET_PWD, inputedPrivKey)
+                window.webapi.account.init(WALLET_PWD, inputedPrivKey)
                 window.localStorage.last_privkey = inputedPrivKey
               } catch (e) {
                 console.log(e)
@@ -121,7 +124,7 @@ export default new class View {
       })
   }
 
-  showStep2() {
+  async showStep2() {
     this.showStep(2)
     const btn = this.root.querySelector(".step-2 button")
     btn.onclick = async () => {
@@ -133,10 +136,10 @@ export default new class View {
         gameLogicFunction: dapp,
         rules: manifest.rules
       })
-      const log = document.getElementById("log")
+      this.log = document.getElementById("log")
       window.game.on("webapi::status", data => {
-        log.style.display = "block"
-        log.innerHTML += `<p><b>INFO</b>: ${JSON.stringify(data)}</p>`
+        this.log.style.display = "block"
+        this.log.innerHTML += `<p><b>INFO</b>: ${JSON.stringify(data)}</p>`
       })
 
       log.style.display = "block"
@@ -148,6 +151,7 @@ export default new class View {
 
     const btn = this.root.querySelector(".step-3 button")
     btn.onclick = async () => {
+      this.setSpinnerStatus("block")
       btn.disabled = true
       const deposit = this.root.querySelector('.step-3 input[name="deposit"]')
         .value
@@ -164,11 +168,14 @@ export default new class View {
           gameData: [0, 0]
         })
       } catch (e) {
+        this.setSpinnerStatus("none")
+        this.log.innerHTML += `<p><b>ERROR</b>: ${"Can't connect, please repeat..."}</p>`
         btn.disabled = false
         console.error(e)
-        console.warn("Cant connect, please repeat...")
+        console.warn("Can't connect, please repeat...")
         return
       }
+      this.setSpinnerStatus("none")
       connection = "success"
       console.info("Connect result: success")
       this.showStep4(connection)
@@ -190,6 +197,7 @@ export default new class View {
 
     const btn = this.root.querySelector(".step-4 button.play")
     btn.onclick = async () => {
+      this.setSpinnerStatus("block")
       btn.disabled = true
       btn.innerHTML = "wait..."
 
@@ -244,6 +252,8 @@ export default new class View {
         }
         // console.log(result)
       } catch (e) {
+        this.setSpinnerStatus("none")
+        this.log.innerHTML += `<p><b>ERROR</b>: ${JSON.stringify(e)}</p>`
         console.error(e)
       }
       console.info("Play result:")
@@ -266,16 +276,20 @@ export default new class View {
   }
 
   async disconnect() {
+    this.setSpinnerStatus("block")
     const btn = document.querySelector(".step-5 button")
     btn.disabled = true
     this.root.querySelector(".step-5 .close-block").style.display = "none"
     try {
       await window.game.disconnect()
     } catch (e) {
+      this.setSpinnerStatus("none")
+      this.log.innerHTML += `<p><b>ERROR</b>: ${"disconnect: error"}</p>`
       console.error(e)
       console.info("Disconnect result:", "error")
     }
     const disconnect = "success"
+    this.log.innerHTML += `<p><b>INFO</b>: Disconnect result: success</p>`
     console.info("Disconnect result:", disconnect)
     this.root.querySelector(".step-5 #close_result").innerHTML = JSON.stringify(
       disconnect
