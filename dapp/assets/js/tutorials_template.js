@@ -14,7 +14,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
      </div>
      </div>
    </div>
-    <div id="network-index-container"><span>current Ethereum network:</span><span id="network-index"></span></div>
+    <div id="network-index-container"><h2>current Ethereum network:</h2><h2 id="network-index"></h2></div>
    
     
     <hr>
