@@ -24,7 +24,7 @@ yarn install & yarn start
 2. Start the relevant bankroller for the network you want to use (Ropsten, Local, etc).
 
 ```javascript
-node ./bin/deamon <privateKey> [options]
+node ./bin/daemon <privateKey> [options]
 ```
 
 where <privateKey> is the private key reserved for bankroller, and [options] defines the blockchain network.
