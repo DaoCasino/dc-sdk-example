@@ -15,9 +15,10 @@
 ```javascript
 git clone --depth=1 https://github.com/DaoCasino/dc-sdk-example ./myDapp
 cd ./myDapp
-npm i && npm run start
+
+npm i & npm run start
 or
-npm i && yarn start
+yarn install & yarn start
 ```
 
 2. Start the relevant bankroller for the network you want to use (Ropsten, Local, etc).
