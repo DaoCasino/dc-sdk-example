@@ -4,7 +4,6 @@ import emptyTriangle from "../images/emptyTriangle.png"
 import filledTriangle from "../images/filledTriangle.png"
 const template = `<div id="tutorial_app" class="show-step-0">
     <h1>Basic Dapp flow example </h1>
-    <div id="network-index-container"><span>current Ethereum network:</span><span id="network-index"></span></div>
     <div style="display:none" id="loader-spinner"class="loaders-container">
     <div class="container">
      <div class="switchbox">
@@ -15,6 +14,8 @@ const template = `<div id="tutorial_app" class="show-step-0">
      </div>
      </div>
    </div>
+    <div id="network-index-container"><h2>current Ethereum network:</h2><h2 id="network-index"></h2></div>
+
 
     <hr>
     <!-- intro -->
