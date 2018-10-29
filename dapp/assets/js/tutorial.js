@@ -211,6 +211,7 @@ export default new class View {
           gameData: [choice],
           rndOpts: [[1, 3]]
         })
+        this.setSpinnerStatus("none")
         let td1 = document.createElement("td")
         let td2 = document.createElement("td")
         let td3 = document.createElement("td")
