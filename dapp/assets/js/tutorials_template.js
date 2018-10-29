@@ -1,5 +1,21 @@
+import emptyCircle from "../images/emptyCircle.png"
+import figure from "../images/figure.png"
+import emptyTriangle from "../images/emptyTriangle.png"
+import filledTriangle from "../images/filledTriangle.png"
 const template = `<div id="tutorial_app" class="show-step-0">
     <h1>Basic Dapp flow example </h1>
+    <div id="network-index-container"><span>current Ethereum network:</span><span id="network-index"></span></div>
+    <div style="display:none" id="loader-spinner"class="loaders-container">
+    <div class="container">
+     <div class="switchbox">
+       <div class="switch-horisontal"><img src=${emptyCircle} width="15px" height="15px"></div>
+       <div class="switch-horisontal"><img src=${emptyTriangle} width="15px" height="15px"></div>
+       <div class="switch-vertical"><img src=${filledTriangle} width="15px" height="15px"></div>
+       <div class="switch-vertical"><img src=${figure} width="15px" height="15px"></div>
+     </div>
+     </div>
+   </div>
+    
     <hr>
     <!-- intro -->
     <div class="step step-0 intro">
@@ -22,7 +38,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
           </li>
         </ul>
         <div>
-          <h2><strong>First of all install and import "dc-webapi" library with the game logic and game metadata </strong></h2>
+          <h2><strong>First of all install and import "dc-webapi" library with the game logic and game metadata </strong></h2>  
           <br/><code>npm install dc-webapi</code> 
           <br/>
             <pre>
@@ -43,16 +59,36 @@ const template = `<div id="tutorial_app" class="show-step-0">
 
     <!-- init acc -->
     <div class="step step-1">
-      <h2>First you need to init Ethereum account</h2>
-      
+      <h2>First you need to choose Ethereum network</h2>
+      <div class="chooseNet">
+      <div style="display: flex;flex-direction: column;">
+        <div class="network-variant network-variant-disable"><label class="network-variant-label" style="background: rgb(41, 182, 175)"></label> <span class="network-variant-name">Mainnet</span></div>
+        <div class="network-variant network-variant-disable"><label class="network-variant-label" style="background: rgb(112, 87, 255);"></label> <span class="network-variant-name">Kovan</span></div>
+        <div class="network-variant network-variant-enable"><label class="network-variant-label" style="background: rgb(246, 195, 67);"></label> <span class="network-variant-name">Rinkeby</span></div>
+        <div class="network-variant network-variant-enable"><label class="network-variant-label" style="background: rgb(255, 74, 141);"></label> <span class="network-variant-name">Ropsten</span></div>
+        <div class="network-variant network-variant-enable"><label class="network-variant-label"></label> <span class="network-variant-name">local</span></div>
+      </div>   
+      </div>
+      <br>
+      <div>
+        <form id="id-platform-form">
+          <input type="text" id="id-platform-input" placeholder="input Platform_id">
+          <button type="button" id="id-platform-button">set</button>
+        </form>
+        <span>Platform_id must be the same with Platform_id on bankroller</span>
+      </div>
+      <br>
+      <div id="body-init">
+      <h2>Now insert your Ethereum privacy key</h2>
       <div class="init">
         <input name="privkey" type="text" placeholder="Insert privatekey" required minlength="66" maxlength="66" />
-        <button>Init Account</button>
+        <button id="init-account-button" >Init Account</button>
       </div>
       <div class="initied">
         <code> window.webapi.account._account</code>
         <p>OK, your account info:</p>
         <pre id="acc_info" style="white-space: inherit"></pre>
+      </div>
       </div>
     </div>
     
@@ -64,10 +100,10 @@ const template = `<div id="tutorial_app" class="show-step-0">
     
     const WALLET_PWD = "1234"
     (async () => {
-      const webapi = new DCWebapi({
+      const webapi = await new DCWebapi({
         platformId: "DC_sdk",
         blockchainNetwork: DC_NETWORK
-      })
+      }).start()
       window.webapi = webapi
       window.webapi.account.init(WALLET_PWD, playerPrivateKeys[DC_NETWORK])
     })()
