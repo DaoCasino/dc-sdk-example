@@ -2,6 +2,7 @@
 const autoprefixer = require("autoprefixer")
 const path = require("path")
 const webpack = require("webpack")
+const os = require("os")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin")
 const fileWatcher = require("extra-watch-webpack-plugin")
@@ -217,7 +218,9 @@ let front_dev_config = {
     // a plugin that prints an error when you attempt to do this.
     // See https://github.com/facebookincubator/create-react-app/issues/240
     new CaseSensitivePathsPlugin(),
-
+    new webpack.DefinePlugin({
+      MACHINE_NAME: os.hostname()
+    }),
     // If you require a missing module and then `npm install` it, you still have
     // to restart the development server for Webpack to discover it. This plugin
     // makes the discovery automatic so you don't have to restart.
