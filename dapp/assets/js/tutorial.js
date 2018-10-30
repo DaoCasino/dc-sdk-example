@@ -1,5 +1,5 @@
 import "../style/tutorial.less"
-import { dapp } from "../../dapp.logic.js"
+import dapp from "../../dapp.logic.js"
 import manifest from "../../dapp.manifest.js"
 import template from "./tutorials_template.js"
 import DCWebapi from "dc-webapi"
@@ -12,7 +12,7 @@ const playerPrivateKeys = {
 
 console.log(manifest)
 const WALLET_PWD = "1234"
-const DC_ID_PLATFORM = "DC_sdk"
+const DC_ID_PLATFORM = "DC_local"
 export default new class View {
   init() {
     localStorage.clear()
