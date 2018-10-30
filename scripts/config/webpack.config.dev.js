@@ -219,7 +219,9 @@ let front_dev_config = {
     // See https://github.com/facebookincubator/create-react-app/issues/240
     new CaseSensitivePathsPlugin(),
     new webpack.DefinePlugin({
-      MACHINE_NAME: os.hostname()
+      "process.env": {
+        MACHINE_NAME: `"${os.hostname()}"`
+      }
     }),
     // If you require a missing module and then `npm install` it, you still have
     // to restart the development server for Webpack to discover it. This plugin
