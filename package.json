@@ -1,6 +1,6 @@
 {
   "name": "dc-sdk-example",
-  "version": "0.1.1 ",
+  "version": "0.1.1",
   "description": "DApp on dao casino protocol example",
   "author": "Alex Step",
   "license": "MIT",
@@ -18,7 +18,8 @@
     "start": "node ./scripts/devserver.js"
   },
   "dependencies": {
-    "dc-webapi": "^0.1.4"
+    "dc-webapi": "^0.1.2",
+    "react-dev-utils": "6.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
