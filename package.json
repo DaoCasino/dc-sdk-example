@@ -18,7 +18,7 @@
     "start": "node ./scripts/devserver.js"
   },
   "dependencies": {
-    "dc-webapi": "^0.1.2"
+    "dc-webapi": "^0.1.4"
   },
   "devDependencies": {
     "react-dev-utils": "3.0.2",
