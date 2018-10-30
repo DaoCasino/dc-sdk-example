@@ -1,13 +1,10 @@
 "use strict"
 const autoprefixer = require("autoprefixer")
 const path = require("path")
-const os = require("os")
 const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin")
-const WatchMissingNodeModulesPlugin = require("react-dev-utils/WatchMissingNodeModulesPlugin")
 const fileWatcher = require("extra-watch-webpack-plugin")
-// const ModuleScopePlugin             = require('react-dev-utils/ModuleScopePlugin')
 
 const paths = require("./paths")
 
@@ -39,9 +36,6 @@ let front_dev_config = {
     // Note: instead of the default WebpackDevServer client, we use a custom one
     // to bring better experience for Create React App users. You can replace
     // the line below with these two lines if you prefer the stock client:
-    // require.resolve('webpack-dev-server/client') + '?/',
-    // require.resolve('webpack/hot/dev-server'),
-    require.resolve("react-dev-utils/webpackHotDevClient"),
 
     // We ship a few polyfills by default:
     require.resolve("./polyfills"),
@@ -88,7 +82,6 @@ let front_dev_config = {
       // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
-      // new ModuleScopePlugin(paths.appSrc, paths.distContract)
     ]
   },
   module: {
@@ -229,7 +222,7 @@ let front_dev_config = {
     // to restart the development server for Webpack to discover it. This plugin
     // makes the discovery automatic so you don't have to restart.
     // See https://github.com/facebookincubator/create-react-app/issues/186
-    new WatchMissingNodeModulesPlugin(paths.appNodeModules),
+    // new WatchMissingNodeModulesPlugin(paths.appNodeModules),
 
     // Moment.js is an extremely popular library that bundles large locale files
     // by default due to how Webpack interprets its code. This is a practical
