@@ -18,8 +18,8 @@
     "start": "node ./scripts/devserver.js"
   },
   "dependencies": {
-    "dc-webapi": "^0.1.2",
-    "react-dev-utils": "6.1.0"
+    "dc-webapi": "*",
+    "react-dev-utils": "3.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
