@@ -2205,30 +2205,37 @@ dc-configs@^0.1.4:
     "@types/node" "^10.11.7"
     cross-fetch "^2.2.3"
 
-dc-core@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/dc-core/-/dc-core-0.1.4.tgz#65432810d61b929ac342583061e182c025b76f00"
+dc-configs@^0.1.6:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/dc-configs/-/dc-configs-0.1.8.tgz#7d0d07974aa7718bd4b2ed37bbf7d5b21376e059"
+  dependencies:
+    "@types/node" "^10.11.7"
+    cross-fetch "^2.2.3"
+
+dc-core@^0.1.6:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/dc-core/-/dc-core-0.1.7.tgz#2be8aa87040ed74026a0eba444ae25ece6ac20b5"
   dependencies:
     "@types/node" "^10.11.7"
     "@types/web3" "^1.0.6"
     chai "^4.1.2"
-    dc-configs "^0.1.4"
-    dc-ethereum-utils "^0.1.4"
-    dc-logging "^0.1.4"
+    dc-configs "^0.1.6"
+    dc-ethereum-utils "^0.1.6"
+    dc-logging "^0.1.6"
     dc-messaging "^0.1.4"
     mocha "^3.2.0"
     node-rsa "^1.0.1"
     web3 "1.0.0-beta.36"
 
-dc-ethereum-utils@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/dc-ethereum-utils/-/dc-ethereum-utils-0.1.4.tgz#21195c34bacdd47cab7010569988a7ee8f995cfe"
+dc-ethereum-utils@^0.1.6:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/dc-ethereum-utils/-/dc-ethereum-utils-0.1.7.tgz#9963bda371491d40a7b71a9b450426f05ce356f3"
   dependencies:
     "@types/node" "^10.11.7"
     "@types/web3" "^1.0.6"
     bn.js "^4.11.8"
-    dc-configs "^0.1.4"
-    dc-logging "^0.1.4"
+    dc-configs "^0.1.6"
+    dc-logging "^0.1.6"
     eth-lib "^0.2.8"
     node-rsa "^1.0.1"
     web3 "1.0.0-beta.36"
@@ -2237,6 +2244,13 @@ dc-ethereum-utils@^0.1.4:
 dc-logging@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/dc-logging/-/dc-logging-0.1.4.tgz#cf0303640309bd65ead70b32e0964556ff18a403"
+  dependencies:
+    "@types/node" "^10.11.7"
+    date-fns "1.29.0"
+
+dc-logging@^0.1.6:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/dc-logging/-/dc-logging-0.1.7.tgz#aa7b3a628c0e7f2f84dcb26ef1164777ca671eee"
   dependencies:
     "@types/node" "^10.11.7"
     date-fns "1.29.0"
@@ -2255,16 +2269,16 @@ dc-messaging@^0.1.4:
     mocha "^3.2.0"
     ws "^6.1.0"
 
-dc-webapi@^0.1.2:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/dc-webapi/-/dc-webapi-0.1.4.tgz#13d505e6636f3ee9ee09211d3e490b847e111f67"
+dc-webapi@*:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/dc-webapi/-/dc-webapi-0.1.7.tgz#b0b63df0d2bfd53ab529ee60de9f97862ef83d23"
   dependencies:
     "@types/node" "^10.11.7"
     "@types/web3" "^1.0.6"
-    dc-configs "^0.1.4"
-    dc-core "^0.1.4"
-    dc-ethereum-utils "^0.1.4"
-    dc-logging "^0.1.4"
+    dc-configs "^0.1.6"
+    dc-core "^0.1.6"
+    dc-ethereum-utils "^0.1.6"
+    dc-logging "^0.1.6"
     dc-messaging "^0.1.4"
 
 debug@*:

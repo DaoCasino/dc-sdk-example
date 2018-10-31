@@ -12,7 +12,7 @@ const playerPrivateKeys = {
 
 console.log(manifest)
 const WALLET_PWD = "1234"
-const DC_ID_PLATFORM = "DC_local"
+const DC_ID_PLATFORM = process.env.MACHINE_NAME || "DC_local"
 export default new class View {
   init() {
     localStorage.clear()

@@ -2,6 +2,7 @@
 const autoprefixer = require("autoprefixer")
 const path = require("path")
 const webpack = require("webpack")
+const os = require("os")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin")
 const fileWatcher = require("extra-watch-webpack-plugin")
@@ -212,7 +213,11 @@ let front_dev_config = {
 
     // This is necessary to emit hot updates (currently CSS only):
     new webpack.HotModuleReplacementPlugin(),
-
+    new webpack.DefinePlugin({
+      "process.env": {
+        MACHINE_NAME: `"${os.hostname()}"`
+      }
+    }),
     // Watcher doesn't work well if you mistype casing in a path so we use
     // a plugin that prints an error when you attempt to do this.
     // See https://github.com/facebookincubator/create-react-app/issues/240
