@@ -15,7 +15,8 @@
     "orientation": "portrait"
   },
   "scripts": {
-    "start": "node ./scripts/devserver.js"
+    "start": "node ./scripts/devserver.js",
+    "build": "node --max-old-space-size=4096 ./scripts/build.js"
   },
   "dependencies": {
     "dc-webapi": "^0.1.6"
