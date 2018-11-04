@@ -4,15 +4,18 @@ import manifest from "../../dapp.manifest.js"
 import template from "./tutorials_template.js"
 import DCWebapi from "dc-webapi"
 
+const WALLET_PWD = "1234"
+const DC_ID_PLATFORM = process.env.MACHINE_NAME || "DC_local"
+const PLATFORM_ID_STORE = {
+  ropsten: "DC_CloudPlatform",
+  rinkeby: "DC_CloudPlatform",
+  local: DC_ID_PLATFORM
+}
 const playerPrivateKeys = {
   ropsten: "0xf67dfe6039ee029ae771d7e2da5a4324532ecc62cb59a292efc9cf49fd1b549e",
   rinkeby: "0x3F8B1B2FC40E744DA0D5D748654E19C5018CC2D43E1FD3EF9FD89E6F7FC652A0",
   local: "0x20dbac4b6dc2f8a663b966ccb3e1dcad7f1d74a277e6b6d3fb7761da06c3ce93"
 }
-
-console.log(manifest)
-const WALLET_PWD = "1234"
-const DC_ID_PLATFORM = process.env.MACHINE_NAME || "DC_local"
 export default new class View {
   init() {
     localStorage.clear()
@@ -33,6 +36,8 @@ export default new class View {
         that.root.querySelector('.step-1 input[name="privkey"]').value =
           playerPrivateKeys[that.networkChoosed]
         that.setNetworkIndex(that.networkChoosed)
+        document.getElementById("id-platform-input").value =
+          PLATFORM_ID_STORE[that.networkChoosed]
       })
     }
     //set default value to Platform_id
