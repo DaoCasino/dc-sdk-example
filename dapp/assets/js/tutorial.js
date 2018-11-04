@@ -105,7 +105,7 @@ export default new class View {
                   blockchainNetwork: that.DC_NETWORK
                 }).start()
                 window.webapi = webapi
-                window.webapi.account.init(WALLET_PWD, inputedPrivKey)
+                //window.webapi.account.init(WALLET_PWD, inputedPrivKey)
                 window.localStorage.last_privkey = inputedPrivKey
               } catch (e) {
                 console.log(e)
