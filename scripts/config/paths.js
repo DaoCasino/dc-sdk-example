@@ -47,9 +47,9 @@ module.exports = {
   DappLogic: resolveApp("dapp/dapp.logic.js"),
 
   dotenv: resolveApp(".env"),
-  appBuild: resolveApp("build"),
+  appBuild: resolveApp("build/"),
   contentBase: resolveApp("dapp/"),
-  appStatic: resolveApp("dapp/static"),
+  appStatic: resolveApp("dapp/assets"),
   appPackageJson: resolveApp("package.json"),
   appSrc: resolveApp("dapp"),
   yarnLockFile: resolveApp("yarn.lock"),
