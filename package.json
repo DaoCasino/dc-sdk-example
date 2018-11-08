@@ -15,12 +15,14 @@
     "orientation": "portrait"
   },
   "scripts": {
-    "start": "node ./scripts/devserver.js"
+    "start": "node ./scripts/devserver.js",
+    "build": "node --max-old-space-size=4096 ./scripts/build.js"
   },
   "dependencies": {
-    "dc-webapi": "^0.1.4"
+    "dc-webapi": "^0.1.6"
   },
   "devDependencies": {
+    "react-dev-utils": "3.0.2",
     "babel-cli": "^6.22.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^6.1.2",

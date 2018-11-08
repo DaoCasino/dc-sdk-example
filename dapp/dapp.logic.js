@@ -1,4 +1,4 @@
-function dapp () {
+module.exports = function () {
   return {
     play: function (userBet, gameData, randoms) {
       const userNum = gameData[0]
@@ -16,4 +16,3 @@ function dapp () {
     }
   }
 }
-export { dapp }

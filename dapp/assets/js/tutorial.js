@@ -1,5 +1,5 @@
 import "../style/tutorial.less"
-import { dapp } from "../../dapp.logic.js"
+import dapp from "../../dapp.logic.js"
 import manifest from "../../dapp.manifest.js"
 import template from "./tutorials_template.js"
 import DCWebapi from "dc-webapi"
@@ -7,11 +7,12 @@ import DCWebapi from "dc-webapi"
 const playerPrivateKeys = {
   ropsten: "0xf67dfe6039ee029ae771d7e2da5a4324532ecc62cb59a292efc9cf49fd1b549e",
   rinkeby: "0x3F8B1B2FC40E744DA0D5D748654E19C5018CC2D43E1FD3EF9FD89E6F7FC652A0",
-  local: ""
+  local: "0x20dbac4b6dc2f8a663b966ccb3e1dcad7f1d74a277e6b6d3fb7761da06c3ce93"
 }
 
+console.log(manifest)
 const WALLET_PWD = "1234"
-const DC_ID_PLATFORM = "DC_local"
+const DC_ID_PLATFORM = process.env.MACHINE_NAME || "DC_local"
 export default new class View {
   init() {
     localStorage.clear()
@@ -94,7 +95,6 @@ export default new class View {
                   ? inputedPlatformId
                   : DC_ID_PLATFORM
                 const inputedPrivKey = privkey_input.value
-
                 const webapi = await new DCWebapi({
                   platformId: platform_id,
                   blockchainNetwork: that.DC_NETWORK
@@ -124,7 +124,7 @@ export default new class View {
       })
   }
 
-  showStep2() {
+  async showStep2() {
     this.showStep(2)
     const btn = this.root.querySelector(".step-2 button")
     btn.onclick = async () => {
@@ -236,7 +236,7 @@ export default new class View {
         for (let i in result) {
           switch (i) {
             case "balances":
-              td6.innerHTML = `player ${result[i].player} 
+              td6.innerHTML = `player ${result[i].player}
                                bankroller ${result[i].bankroller}`
               break
             case "params":
