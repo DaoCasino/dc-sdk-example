@@ -232,7 +232,7 @@ export default new class View {
         tr.appendChild(td4)
         tr.appendChild(td5)
         tr.appendChild(td6)
-
+        console.log(result)
         for (let i in result) {
           switch (i) {
             case "balances":
