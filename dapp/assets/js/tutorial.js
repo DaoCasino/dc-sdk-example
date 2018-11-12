@@ -100,6 +100,12 @@ export default new class View {
                   blockchainNetwork: that.DC_NETWORK
                 }).start()
                 window.webapi = webapi
+                // window.addEventListener('message', event => {
+                //   window.postMessage({
+                //     action: 'DC_ACCOUNT_PRIVATE_KEY',
+                //     data: { privateKey: inputedPrivKey }
+                //   })
+                // })
                 window.webapi.account.init(WALLET_PWD, inputedPrivKey)
                 window.localStorage.last_privkey = inputedPrivKey
               } catch (e) {
@@ -232,7 +238,7 @@ export default new class View {
         tr.appendChild(td4)
         tr.appendChild(td5)
         tr.appendChild(td6)
-
+        console.log(result)
         for (let i in result) {
           switch (i) {
             case "balances":
