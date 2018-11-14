@@ -117,6 +117,7 @@ function build (previousFileSizes) {
       if (messages.errors.length) {
         return reject(new Error(messages.errors.join('\n\n')))
       }
+      process.env.CI = false
       if (process.env.CI && messages.warnings.length) {
         console.log(chalk.yellow(
           '\nTreating warnings as errors because process.env.CI = true.\n' +
