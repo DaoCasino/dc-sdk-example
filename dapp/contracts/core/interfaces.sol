@@ -5,15 +5,9 @@ contract ERC20Interface {
     function transferFrom(address _from, address _to, uint256 _value) public returns(bool success);
 }
 
-interface RefInterface {
+interface IPlatform {
     function getService(address _player) external constant returns(address _operator, address _referrer);
-}
-
-interface GameWLinterface {
     function getStatus(address _game) external view returns(bool status);
-}
-
-interface PlayerWLinterface {
     function getMaxAmount(address _player) external view returns(uint);
 }
 
