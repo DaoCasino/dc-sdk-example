@@ -5,7 +5,7 @@ pragma solidity ^0.4.17;
 @dev contract contains the necessary changes for sign hash
 @author Nick Johnson
 */
-contract RSA {
+contract RSAVerify {
 
     /**
     @notice Verify of RSA sign
@@ -14,15 +14,12 @@ contract RSA {
     @param E E-component of RSA public keys
     @param S Signature of the raw message
     */
-    function verify(bytes32 rawmsg, bytes N, bytes E, bytes S) public view returns (bool) {
-        bytes memory b = new bytes(N.length);
-            for (uint i = 1; i <= rawmsg.length; i++){
-                b[b.length-i] = rawmsg[rawmsg.length-i];
-            }
+    function verify(bytes32 rawmsg, bytes N, bytes E, bytes S) external view returns (bool) {
         bool retS;
         bytes memory valS;
         (retS, valS) = modexp(S, E, N);
-        return (retS == true && keccak256(valS) == keccak256(b));
+        bytes32 valS32 = sliceLastBytes32(valS);
+        return (retS == true && valS32 == rawmsg);
     }
 
     function memcopy(bytes src, uint srcoffset, bytes dst, uint dstoffset, uint len) pure internal {
@@ -78,6 +75,13 @@ contract RSA {
         //call bigModExp precompiled contract
         assembly {
             success := staticcall(gas(), 5, add(input, 32), size, add(output, 32), modulus_length)
+        }
+    }
+
+    function sliceLastBytes32(bytes bytesArr) public pure returns(bytes32 result) {
+        uint length = bytesArr.length;
+        assembly {
+            result := mload(add(bytesArr, length))
         }
     }
 

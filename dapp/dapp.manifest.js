@@ -148,7 +148,6 @@ module.exports = {
           { name: "_bankrollerBalance", type: "uint256" },
           { name: "_totalBet", type: "uint256" },
           { name: "_session", type: "uint256" },
-          { name: "_close", type: "bool" },
           { name: "_sign", type: "bytes" }
         ],
         name: "closeByConsent",
@@ -193,7 +192,7 @@ module.exports = {
           { name: "_playerBalance", type: "uint256" },
           { name: "_bankrollerBalance", type: "uint256" },
           { name: "_openingBlock", type: "uint256" },
-          { name: "_gameData", type: "uint256[]" },
+          { name: "_gameData", type: "bytes" },
           { name: "_N", type: "bytes" },
           { name: "_E", type: "bytes" },
           { name: "_sign", type: "bytes" }
