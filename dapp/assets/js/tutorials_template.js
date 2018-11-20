@@ -51,7 +51,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
           </div>
       </p>
 
-      <p>Do not forget read our documentation <a target="_blank" href="https://developers.dao.casino/">https://developers.dao.casino/docs/</a> </p>
+      <p>Do not forget read our documentation <a target="_blank" href="https://github.com/DaoCasino/Documentation">https://github.com/DaoCasino/Documentationdocs/</a> </p>
 
       <p>TIP: Open chromeDevTools and see console for more information</p>
 
@@ -235,7 +235,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
         <p>
           More information you can find in our git and site
           <ul>
-            <li><a target="_blank" href="https://developers.dao.casino/">Dev site</a></li>
+            <li><a target="_blank" href="https://github.com/DaoCasino/Documentation">Dev site</a></li>
             <li><a target="_blank" href="https://github.com/DaoCasinok">DaoCasino Github</a></li>
             <li><a target="_blank" href="https://github.com/DaoCasino/sdk">DaoCasino/sdk</a></li>
           </ul>
