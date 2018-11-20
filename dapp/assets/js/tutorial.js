@@ -171,7 +171,7 @@ export default new class View {
         await window.game.start()
         await window.game.connect({
           playerDeposit: deposit,
-          gameData: [0, 0]
+          gameData: '0x42'
         })
       } catch (e) {
         this.setSpinnerStatus("none")

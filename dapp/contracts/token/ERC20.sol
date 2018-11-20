@@ -15,7 +15,7 @@ pragma solidity ^0.4.11;
 // ----------------------------------------------------------------------------
 // Safe maths, borrowed from OpenZeppelin
 // ----------------------------------------------------------------------------
-import '../library/SafeMath.sol';
+import '../lib/SafeMath.sol';
 
 
 // ----------------------------------------------------------------------------
@@ -25,7 +25,7 @@ contract Owned {
     address public owner;
     address public newOwner;
 
-    function Owned() {
+    constructor() public {
         owner = msg.sender;
     }
 
@@ -34,11 +34,11 @@ contract Owned {
         _;
     }
 
-    function transferOwnership(address _newOwner) onlyOwner {
+    function transferOwnership(address _newOwner) public onlyOwner {
         newOwner = _newOwner;
     }
  
-    function acceptOwnership() {
+    function acceptOwnership() public {
         if (msg.sender == newOwner) {
             owner = newOwner;
         }
@@ -70,8 +70,8 @@ contract ERC20Token {
     // ------------------------------------------------------------------------
     // Get the total token supply
     // ------------------------------------------------------------------------
-    function totalSupply() constant returns (uint256 totalSupply) {
-        totalSupply = _totalSupply;
+    function totalSupply() public constant returns (uint256) {
+        return _totalSupply;
     }
 
     // ------------------------------------------------------------------------
@@ -162,7 +162,7 @@ contract ERC20 is ERC20Token, Owned {
     string public constant symbol = "BET";
     uint8 public constant decimals = 18;
 
-    function ERC20() public {
+    constructor() public {
     }
 
     // ------------------------------------------------------------------------
