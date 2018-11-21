@@ -4,15 +4,18 @@ import manifest from "../../dapp.manifest.js"
 import template from "./tutorials_template.js"
 import DCWebapi from "dc-webapi"
 
+const WALLET_PWD = "1234"
+const DC_ID_PLATFORM = process.env.MACHINE_NAME || "DC_local"
+const PLATFORM_ID_STORE = {
+  ropsten: "DC_CloudPlatform",
+  rinkeby: "DC_CloudPlatform",
+  local: DC_ID_PLATFORM
+}
 const playerPrivateKeys = {
   ropsten: "0xf67dfe6039ee029ae771d7e2da5a4324532ecc62cb59a292efc9cf49fd1b549e",
   rinkeby: "0x3F8B1B2FC40E744DA0D5D748654E19C5018CC2D43E1FD3EF9FD89E6F7FC652A0",
   local: "0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3"
 }
-
-console.log(manifest)
-const WALLET_PWD = "1234"
-const DC_ID_PLATFORM = process.env.MACHINE_NAME || "DC_local"
 export default new class View {
   init() {
     localStorage.clear()
@@ -33,6 +36,8 @@ export default new class View {
         that.root.querySelector('.step-1 input[name="privkey"]').value =
           playerPrivateKeys[that.networkChoosed]
         that.setNetworkIndex(that.networkChoosed)
+        document.getElementById("id-platform-input").value =
+          PLATFORM_ID_STORE[that.networkChoosed]
       })
     }
     //set default value to Platform_id
@@ -95,20 +100,23 @@ export default new class View {
                   ? inputedPlatformId
                   : DC_ID_PLATFORM
                 const inputedPrivKey = privkey_input.value
-                window.webapi = await new DCWebapi({
+
+                window.webapi = new DCWebapi({
                   platformId: platform_id,
                   blockchainNetwork: that.DC_NETWORK
-                }).start()
-                window.webapi.on('DC_ACCOUNT_INFO', res => {
-                  console.log(111, res)
                 })
-                // window.addEventListener('message', event => {
-                //   window.postMessage({
-                //     action: 'DC_ACCOUNT_PRIVATE_KEY',
-                //     data: { privateKey: inputedPrivKey }
-                //   })
-                // })
-                window.webapi.account.init(WALLET_PWD, inputedPrivKey)
+
+                window.webapi.on(window.webapi.ACTION_GAME_READY, () => {
+                  window.game = window.webapi.createGame({
+                    name: manifest.slug,
+                    gameContractAddress: manifest.getContract(this.DC_NETWORK).address,
+                    gameLogicFunction: dapp,
+                    rules: manifest.rules
+                  })
+                })
+
+                await window.webapi.start()
+                // window.webapi.account.init(WALLET_PWD, inputedPrivKey)
                 window.localStorage.last_privkey = inputedPrivKey
               } catch (e) {
                 console.log(e)
@@ -138,12 +146,12 @@ export default new class View {
     btn.onclick = async () => {
       btn.disabled = true
 
-      window.game = window.webapi.createGame({
-        name: manifest.slug,
-        gameContractAddress: manifest.getContract(this.DC_NETWORK).address,
-        gameLogicFunction: dapp,
-        rules: manifest.rules
-      })
+      // window.game = window.webapi.createGame({
+      //   name: manifest.slug,
+      //   gameContractAddress: manifest.getContract(this.DC_NETWORK).address,
+      //   gameLogicFunction: dapp,
+      //   rules: manifest.rules
+      // })
       this.log = document.getElementById("log")
       window.webapi.on("webapi::status", data => {
         console.log(data)
@@ -241,7 +249,7 @@ export default new class View {
         tr.appendChild(td4)
         tr.appendChild(td5)
         tr.appendChild(td6)
-        console.log(result)
+
         for (let i in result) {
           switch (i) {
             case "balances":
