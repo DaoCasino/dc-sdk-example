@@ -14,7 +14,7 @@ const PLATFORM_ID_STORE = {
 const playerPrivateKeys = {
   ropsten: "0xf67dfe6039ee029ae771d7e2da5a4324532ecc62cb59a292efc9cf49fd1b549e",
   rinkeby: "0x3F8B1B2FC40E744DA0D5D748654E19C5018CC2D43E1FD3EF9FD89E6F7FC652A0",
-  local: "0x20dbac4b6dc2f8a663b966ccb3e1dcad7f1d74a277e6b6d3fb7761da06c3ce93"
+  local: "0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3"
 }
 export default new class View {
   init() {
@@ -100,12 +100,24 @@ export default new class View {
                   ? inputedPlatformId
                   : DC_ID_PLATFORM
                 const inputedPrivKey = privkey_input.value
-                const webapi = await new DCWebapi({
-                  platformId: platform_id,
+
+                window.webapi = await new DCWebapi({
+                  // platformId: platform_id,
                   blockchainNetwork: that.DC_NETWORK
-                }).start()
-                window.webapi = webapi
-                window.webapi.account.init(WALLET_PWD, inputedPrivKey)
+                })
+
+                window.webapi.on(window.webapi.ACTION_GAME_READY, () => {
+                  window.game = window.webapi.createGame({
+                    name: manifest.slug,
+                    gameContractAddress: manifest.getContract(this.DC_NETWORK).address,
+                    gameLogicFunction: dapp,
+                    rules: manifest.rules
+                  })
+                })
+
+                await window.webapi.start()
+
+                // window.webapi.account.init(WALLET_PWD, inputedPrivKey)
                 window.localStorage.last_privkey = inputedPrivKey
               } catch (e) {
                 console.log(e)
@@ -135,14 +147,15 @@ export default new class View {
     btn.onclick = async () => {
       btn.disabled = true
 
-      window.game = window.webapi.createGame({
-        name: manifest.slug,
-        gameContractAddress: manifest.getContract(this.DC_NETWORK).address,
-        gameLogicFunction: dapp,
-        rules: manifest.rules
-      })
+      // window.game = window.webapi.createGame({
+      //   name: manifest.slug,
+      //   gameContractAddress: manifest.getContract(this.DC_NETWORK).address,
+      //   gameLogicFunction: dapp,
+      //   rules: manifest.rules
+      // })
       this.log = document.getElementById("log")
-      window.game.on("webapi::status", data => {
+      window.webapi.on("webapi::status", data => {
+        console.log(data)
         this.log.style.display = "block"
         this.log.innerHTML += `<p><b>INFO</b>: ${JSON.stringify(data)}</p>`
       })
@@ -170,7 +183,7 @@ export default new class View {
         await window.game.start()
         await window.game.connect({
           playerDeposit: deposit,
-          gameData: "0x25"
+          gameData: '0x00'
         })
       } catch (e) {
         this.setSpinnerStatus("none")
