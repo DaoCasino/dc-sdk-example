@@ -101,8 +101,8 @@ export default new class View {
                   : DC_ID_PLATFORM
                 const inputedPrivKey = privkey_input.value
 
-                window.webapi = new DCWebapi({
-                  platformId: platform_id,
+                window.webapi = await new DCWebapi({
+                  // platformId: platform_id,
                   blockchainNetwork: that.DC_NETWORK
                 })
 
@@ -116,6 +116,7 @@ export default new class View {
                 })
 
                 await window.webapi.start()
+
                 // window.webapi.account.init(WALLET_PWD, inputedPrivKey)
                 window.localStorage.last_privkey = inputedPrivKey
               } catch (e) {
