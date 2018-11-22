@@ -114,7 +114,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
       <p>
       <pre> window.game = window.webapi.createGame({
         name: manifest.slug,
-        contract: manifest.getContract(DC_NETWORK),
+        gameContractAddress: manifest.getContract(DC_NETWORK).address,
         gameLogicFunction: dapp,
         rules: manifest.rules
       })

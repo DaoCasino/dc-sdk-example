@@ -4,15 +4,18 @@ import manifest from "../../dapp.manifest.js"
 import template from "./tutorials_template.js"
 import DCWebapi from "dc-webapi"
 
+const WALLET_PWD = "1234"
+const DC_ID_PLATFORM = process.env.MACHINE_NAME || "DC_local"
+const PLATFORM_ID_STORE = {
+  ropsten: "DC_CloudPlatform",
+  rinkeby: "DC_CloudPlatform",
+  local: DC_ID_PLATFORM
+}
 const playerPrivateKeys = {
   ropsten: "0xf67dfe6039ee029ae771d7e2da5a4324532ecc62cb59a292efc9cf49fd1b549e",
   rinkeby: "0x3F8B1B2FC40E744DA0D5D748654E19C5018CC2D43E1FD3EF9FD89E6F7FC652A0",
-  local: "0x20dbac4b6dc2f8a663b966ccb3e1dcad7f1d74a277e6b6d3fb7761da06c3ce93"
+  local: "0x8d5366123cb560bb606379f90a0bfd4769eecc0557f1b362dcae9012b548b1e5"
 }
-
-console.log(manifest)
-const WALLET_PWD = "1234"
-const DC_ID_PLATFORM = process.env.MACHINE_NAME || "DC_local"
 export default new class View {
   init() {
     localStorage.clear()
@@ -33,6 +36,8 @@ export default new class View {
         that.root.querySelector('.step-1 input[name="privkey"]').value =
           playerPrivateKeys[that.networkChoosed]
         that.setNetworkIndex(that.networkChoosed)
+        document.getElementById("id-platform-input").value =
+          PLATFORM_ID_STORE[that.networkChoosed]
       })
     }
     //set default value to Platform_id
@@ -95,18 +100,25 @@ export default new class View {
                   ? inputedPlatformId
                   : DC_ID_PLATFORM
                 const inputedPrivKey = privkey_input.value
-                const webapi = await new DCWebapi({
-                  platformId: platform_id,
+
+                window.webapi = await new DCWebapi({
+                  // platformId: platform_id,
                   blockchainNetwork: that.DC_NETWORK
-                }).start()
-                window.webapi = webapi
-                // window.addEventListener('message', event => {
-                //   window.postMessage({
-                //     action: 'DC_ACCOUNT_PRIVATE_KEY',
-                //     data: { privateKey: inputedPrivKey }
-                //   })
-                // })
-                window.webapi.account.init(WALLET_PWD, inputedPrivKey)
+                })
+
+                window.webapi.on(window.webapi.ACTION_GAME_READY, () => {
+                  window.game = window.webapi.createGame({
+                    name: manifest.slug,
+                    gameContractAddress: manifest.getContract(this.DC_NETWORK)
+                      .address,
+                    gameLogicFunction: dapp,
+                    rules: manifest.rules
+                  })
+                })
+
+                await window.webapi.start()
+
+                // window.webapi.account.init(WALLET_PWD, inputedPrivKey)
                 window.localStorage.last_privkey = inputedPrivKey
               } catch (e) {
                 console.log(e)
@@ -136,14 +148,15 @@ export default new class View {
     btn.onclick = async () => {
       btn.disabled = true
 
-      window.game = window.webapi.createGame({
-        name: manifest.slug,
-        contract: manifest.getContract(this.DC_NETWORK),
-        gameLogicFunction: dapp,
-        rules: manifest.rules
-      })
+      // window.game = window.webapi.createGame({
+      //   name: manifest.slug,
+      //   gameContractAddress: manifest.getContract(this.DC_NETWORK).address,
+      //   gameLogicFunction: dapp,
+      //   rules: manifest.rules
+      // })
       this.log = document.getElementById("log")
-      window.game.on("webapi::status", data => {
+      window.webapi.on("webapi::status", data => {
+        console.log(data)
         this.log.style.display = "block"
         this.log.innerHTML += `<p><b>INFO</b>: ${JSON.stringify(data)}</p>`
       })
@@ -171,7 +184,7 @@ export default new class View {
         await window.game.start()
         await window.game.connect({
           playerDeposit: deposit,
-          gameData: [0, 0]
+          gameData: "0x00"
         })
       } catch (e) {
         this.setSpinnerStatus("none")
@@ -238,7 +251,7 @@ export default new class View {
         tr.appendChild(td4)
         tr.appendChild(td5)
         tr.appendChild(td6)
-        console.log(result)
+
         for (let i in result) {
           switch (i) {
             case "balances":
