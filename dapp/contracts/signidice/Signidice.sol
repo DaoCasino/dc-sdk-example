@@ -1,8 +1,8 @@
 pragma solidity ^0.4.24;
 
-import './RSAVerify.sol';
+import './rsa.sol';
 
-contract Signidice is RSAVerify {
+contract Signidice is RSA {
 
     /**
     @notice Generate random ranges

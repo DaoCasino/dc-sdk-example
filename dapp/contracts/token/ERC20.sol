@@ -15,7 +15,7 @@ pragma solidity ^0.4.11;
 // ----------------------------------------------------------------------------
 // Safe maths, borrowed from OpenZeppelin
 // ----------------------------------------------------------------------------
-import '../lib/SafeMath.sol';
+import '../library/SafeMath.sol';
 
 
 // ----------------------------------------------------------------------------
@@ -70,14 +70,14 @@ contract ERC20Token {
     // ------------------------------------------------------------------------
     // Get the total token supply
     // ------------------------------------------------------------------------
-    function totalSupply() public constant returns (uint256) {
+    function totalSupply() public view returns (uint256) {
         return _totalSupply;
     }
 
     // ------------------------------------------------------------------------
     // Get the account balance of another account with address _owner
     // ------------------------------------------------------------------------
-    function balanceOf(address _owner) public constant returns (uint256 balance) {
+    function balanceOf(address _owner) public view returns (uint256 balance) {
         return balances[_owner];
     }
 
@@ -145,7 +145,7 @@ contract ERC20Token {
     function allowance(
         address _owner, 
         address _spender
-    ) public constant returns (uint256 remaining)
+    ) public view returns (uint256 remaining)
     {
     return allowed[_owner][_spender];
     }
@@ -169,7 +169,7 @@ contract ERC20 is ERC20Token, Owned {
     // Only for testing in testnet
     // ------------------------------------------------------------------------
     function faucet() public {
-        balances[msg.sender] += 10000 ether;
+        balances[msg.sender] = balances[msg.sender].add(10000 ether);
         _totalSupply = _totalSupply.add(10000 ether);
     }
 
