@@ -1,7 +1,7 @@
 pragma solidity ^0.4.24;
 pragma experimental ABIEncoderV2;
 
-import '../gameEngine/GameObject.sol';
+import '../game/GameObject.sol';
 
 contract IGameEngine is GameObject {
     function game(gameData  _gameData, uint256[]  _bets, uint256[]  _randoms) public view returns (int256[2]);
