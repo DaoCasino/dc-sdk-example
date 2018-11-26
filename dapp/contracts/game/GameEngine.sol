@@ -1,9 +1,9 @@
 pragma solidity ^0.4.24;
 pragma experimental ABIEncoderV2;
 
-import '../lib/SafeMath.sol';
+import '../library/SafeMath.sol';
 import './GameObject.sol';
-import { IGameEngine, ISignidice } from '../interfaces/Interfaces.sol';
+import {ISignidice } from '../interfaces/Interfaces.sol';
 
 /**
 * @title Dice game
