@@ -1,8 +1,8 @@
 const addressFunctions = {
-  rinkeby: () => "0xCD184E71b763d86d4766cbA902B0d34DF4BA0c16",
-  ropsten: () => "0x76acfE4A87381E6Ff1B5c68d404CD49837f53184",
-  mainnet: () => "",
-  local: () => "contracts->Game"
+  rinkeby: "0xCD184E71b763d86d4766cbA902B0d34DF4BA0c16",
+  ropsten: "0x76acfE4A87381E6Ff1B5c68d404CD49837f53184",
+  local: "contracts->Game",
+  mainnet: "",
 }
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
   about: "./README.md",
 
   getContract: blockchainNetwork => ({
-    address: addressFunctions[blockchainNetwork]()
+    address: addressFunctions[blockchainNetwork]
   }),
 
   rules: {
