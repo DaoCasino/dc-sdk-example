@@ -228,7 +228,7 @@ export default new class View {
           userBets: [bet],
           gameData: {
             randomRanges: [[1, 3]],
-            custom: { playerNumbers: choice }
+            custom: { playerNumbers: { t: "uint256", v: choice } }
           }
         })
         this.setSpinnerStatus("none")
