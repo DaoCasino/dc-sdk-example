@@ -50,12 +50,12 @@ contract GameChannel is GameObject {
 
     struct Channel {
         State   state;
-        address player;            
-        address bankroller;         
-        uint256 playerBalance;      
-        uint256 bankrollerBalance;    
-        uint256 totalBet;  
-        uint256 session;            
+        address player;
+        address bankroller;
+        uint256 playerBalance;
+        uint256 bankrollerBalance;
+        uint256 totalBet;
+        uint256 session;
         uint256 endBlock;
         bytes32 RSAHash;
     }
@@ -84,8 +84,8 @@ contract GameChannel is GameObject {
     @param _playerBalance     Player's deposit
     @param _bankrollerBalance Bankroller's deposit
     @param _openingBlock      opening block
-    @param _N                 N-component of bankroller's rsa public key 
-    @param _E                 E-component of bankroller's rsa public key 
+    @param _N                 N-component of bankroller's rsa public key
+    @param _E                 E-component of bankroller's rsa public key
     @param _signature         Signature from the player
     */
     function openChannel(
@@ -108,7 +108,7 @@ contract GameChannel is GameObject {
         require(platform.getStatus(this), 'invalid status');
         require((_signer == _player || _signer == _bankroller) && (msg.sender != _signer), 'invalid signer');
         require(msg.sender == _player || msg.sender == _bankroller, 'invalid sender');
-        
+
         require(token.transferFrom(_player, this, _playerBalance), 'fail transfer from player');
         require(token.transferFrom(_bankroller, this, _bankrollerBalance), 'fail transfe from bankroller');
 
@@ -125,7 +125,7 @@ contract GameChannel is GameObject {
         });
 
         channels[_id] = _channel;
-        
+
         emit logChannel("open channel", _id);
     }
 
@@ -246,7 +246,7 @@ contract GameChannel is GameObject {
     }
 
     /**
-    @notice To open a dispute 
+    @notice To open a dispute
     @param _id Unique channel identifier
     @param _session Number of the game session
     @param _disputeBets Player's bet
@@ -269,7 +269,7 @@ contract GameChannel is GameObject {
         require(_signer == _channel.player, 'signer is not a player');
         require(checkGameData(_gameData, _disputeBets), 'invalid gameData');
         require(engine.getProfit(_gameData, _disputeBets) <= _channel.bankrollerBalance, 'invalid profit');
-        
+
         if (_channel.endBlock.sub(block.number) < safeTime) {
             _channel.endBlock = block.number.add(safeTime);
         }
@@ -288,8 +288,8 @@ contract GameChannel is GameObject {
     /**
     @notice Closing of the channel on the dispute
     @param _id Unique channel identifier
-    @param _N  N-component of bankroller's rsa public key 
-    @param _E  E-component of bankroller's rsa public key 
+    @param _N  N-component of bankroller's rsa public key
+    @param _E  E-component of bankroller's rsa public key
     @param _rsaSignature sign for generate random
     */
     function resolveDispute(
@@ -306,11 +306,11 @@ contract GameChannel is GameObject {
         bytes32 _hash = keccak256(abi.encodePacked(_id, _channel.session.add(1), _dispute.disputeBets, _gameDataHash));
         require(_channel.state == State.dispute, 'invalid status');
         require(msg.sender == _channel.bankroller, 'invalid sender');
-        
+
         // check time!
-        
+
         require(keccak256(abi.encodePacked(keccak256(_N), keccak256(_E))) == _channel.RSAHash, 'invalid public');
-        require(signidice.verify(_hash, _N, _E, _rsaSignature), 'invalid verify');                     
+        require(signidice.verify(_hash, _N, _E, _rsaSignature), 'invalid verify');
         resolve(_id, _rsaSignature);
     }
 
@@ -326,10 +326,10 @@ contract GameChannel is GameObject {
         int256[2] memory profit = engine.resolveGame(_dispute.disputeGameData, _dispute.disputeBets, _signature);
 
         // add overflow require
-        _channel.playerBalance     = uint256(int256(_channel.playerBalance) + profit[0]);      
-        _channel.bankrollerBalance = uint256(int256(_channel.playerBalance) + profit[1]);   
+        _channel.playerBalance     = uint256(int256(_channel.playerBalance) + profit[0]);
+        _channel.bankrollerBalance = uint256(int256(_channel.playerBalance) + profit[1]);
 
-        emit logChannel("resolve dispute", _id); 
+        emit logChannel("resolve dispute", _id);
         closeChannel(_id);
     }
 
@@ -343,15 +343,15 @@ contract GameChannel is GameObject {
         uint256 _bankrollerReward   = _forReward.mul(bankrollReward).div(100);
         uint256 _forPlayer          = _channel.playerBalance;
         uint256 _forBankroller      = uint(0);
-        
+
         if(_forReward > _channel.bankrollerBalance) {
             _forPlayer = _forPlayer.sub(_forReward);
         } else {
             _forBankroller = ((_channel.bankrollerBalance.add(_bankrollerReward).sub(_forReward)));
         }
-        
+
         serviceReward(_channel.player, _forReward);
-        token.transfer(_channel.bankroller, _forBankroller);        
+        token.transfer(_channel.bankroller, _forBankroller);
         token.transfer(_channel.player, _forPlayer);
         _channel.state = State.close;
         delete _channel.playerBalance;
@@ -359,7 +359,7 @@ contract GameChannel is GameObject {
         if (_channel.state == State.dispute) {
            delete disputes[_id];
         }
-        emit logChannel("close channel", _id); 
+        emit logChannel("close channel", _id);
     }
 
     /**
