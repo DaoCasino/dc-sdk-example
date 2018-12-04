@@ -1,5 +1,6 @@
 {
   "name": "dc-sdk-example",
+  "private": true,
   "version": "0.1.44",
   "description": "DApp on dao casino protocol example",
   "author": "Alex Step",
@@ -54,5 +55,5 @@
     "webpack-manifest-plugin": "2.0.3",
     "whatwg-fetch": "2.0.4"
   },
-  "gitHead": "4c0c6a8bb67e875ae858600341ad2744f799c32e"
+  "gitHead": "c83ce2ab1c77daa4fabf666260b0698d37dbf312"
 }
