@@ -183,8 +183,7 @@ export default new class View {
       try {
         await window.game.start()
         await window.game.connect({
-          playerDeposit: deposit,
-          gameData: "0x00"
+          playerDeposit: playerDeposit
         })
       } catch (e) {
         this.setSpinnerStatus("none")
@@ -229,7 +228,7 @@ export default new class View {
           userBets: [bet],
           gameData: {
             randomRanges: [[1, 3]],
-            custom: { playerNumbers: choice }
+            custom: { playerNumbers: { t: "uint256", v: choice } }
           }
         })
         this.setSpinnerStatus("none")

@@ -13,9 +13,6 @@ module.exports = function() {
 
       // return player profit
       return { profit }
-    },
-    customDataFormat: function(gameDataCustom) {
-      return [{ t: "uint256", v: gameDataCustom.playerNumbers }]
     }
   }
 }
