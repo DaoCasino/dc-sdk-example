@@ -156,7 +156,6 @@ export default new class View {
       })
       this.log = document.getElementById("log")
       window.webapi.on("webapi::status", data => {
-        console.log(data)
         this.log.style.display = "block"
         this.log.innerHTML += `<p><b>INFO</b>: ${JSON.stringify(data)}</p>`
       })
