@@ -182,9 +182,7 @@ export default new class View {
       let connection = ""
       try {
         await window.game.start()
-        await window.game.connect({
-          playerDeposit: playerDeposit
-        })
+        await window.game.connect({ playerDeposit: deposit })
       } catch (e) {
         this.setSpinnerStatus("none")
         this.log.innerHTML += `<p><b>ERROR</b>: ${"Can't connect, please repeat..."}</p>`
@@ -224,6 +222,7 @@ export default new class View {
         '.step-4 input[name="choice"]:checked'
       ).value
       try {
+        console.log(bet, choice)
         const result = await window.game.play({
           userBets: [bet],
           gameData: {
