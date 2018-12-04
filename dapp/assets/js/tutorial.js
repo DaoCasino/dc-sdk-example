@@ -180,7 +180,6 @@ export default new class View {
       // const connection = await App.startGame(deposit)
       let connection = ""
       try {
-        console.log(deposit)
         await window.game.start({ playerDeposit: deposit })
         await window.game.connect({ playerDeposit: deposit })
       } catch (e) {
