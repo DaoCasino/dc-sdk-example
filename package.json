@@ -1,6 +1,6 @@
 {
   "name": "dc-sdk-example",
-  "version": "0.1.38",
+  "version": "0.1.39",
   "description": "DApp on dao casino protocol example",
   "author": "Alex Step",
   "license": "MIT",
@@ -19,7 +19,7 @@
     "build": "node --max-old-space-size=4096 ./scripts/build.js"
   },
   "dependencies": {
-    "dc-webapi": "^0.1.38",
+    "dc-webapi": "^0.1.39",
     "serviceworker-webpack-plugin": "1.0.1"
   },
   "devDependencies": {
