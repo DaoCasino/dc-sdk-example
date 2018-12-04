@@ -54,5 +54,5 @@
     "webpack-manifest-plugin": "2.0.3",
     "whatwg-fetch": "2.0.4"
   },
-  "gitHead": "c3556453e7f8c5c45e3f6537522a327c5c0f97f1"
+  "gitHead": "4c0c6a8bb67e875ae858600341ad2744f799c32e"
 }
