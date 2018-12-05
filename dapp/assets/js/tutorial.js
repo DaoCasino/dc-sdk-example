@@ -180,7 +180,7 @@ export default new class View {
       // const connection = await App.startGame(deposit)
       let connection = ""
       try {
-        await window.game.start()
+        await window.game.start({ playerDeposit: deposit })
         await window.game.connect({ playerDeposit: deposit })
       } catch (e) {
         this.setSpinnerStatus("none")
