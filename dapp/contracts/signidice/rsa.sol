@@ -5,21 +5,21 @@ pragma solidity ^0.4.17;
 @dev contract contains the necessary changes for sign hash
 @author Nick Johnson
 */
-contract RSAVerify {
+contract RSA {
 
     /**
     @notice Verify of RSA sign
-    @param rawmsg raw message
+    @param _hash raw message
     @param N N-component of RSA public keys
     @param E E-component of RSA public keys
     @param S Signature of the raw message
     */
-    function verify(bytes32 rawmsg, bytes N, bytes E, bytes S) external view returns (bool) {
+    function verify(bytes32 _hash, bytes N, bytes E, bytes S) external view returns (bool) {
         bool retS;
         bytes memory valS;
         (retS, valS) = modexp(S, E, N);
         bytes32 valS32 = sliceLastBytes32(valS);
-        return (retS == true && valS32 == rawmsg);
+        return (retS == true && valS32 == _hash);
     }
 
     function memcopy(bytes src, uint srcoffset, bytes dst, uint dstoffset, uint len) pure internal {

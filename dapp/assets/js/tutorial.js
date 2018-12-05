@@ -102,23 +102,23 @@ export default new class View {
                 const inputedPrivKey = privkey_input.value
 
                 window.webapi = await new DCWebapi({
-                  // platformId: platform_id,
+                  platformId: platform_id,
                   blockchainNetwork: that.DC_NETWORK
                 })
 
-                window.webapi.on(window.webapi.ACTION_GAME_READY, () => {
-                  window.game = window.webapi.createGame({
-                    name: manifest.slug,
-                    gameContractAddress: manifest.getContract(this.DC_NETWORK)
-                      .address,
-                    gameLogicFunction: dapp,
-                    rules: manifest.rules
-                  })
-                })
+                // window.webapi.on(window.webapi.ACTION_GAME_READY, () => {
+                //   window.game = window.webapi.createGame({
+                //     name: manifest.slug,
+                //     gameContractAddress: manifest.getContract(this.DC_NETWORK)
+                //       .address,
+                //     gameLogicFunction: dapp,
+                //     rules: manifest.rules
+                //   })
+                // })
 
                 await window.webapi.start()
 
-                // window.webapi.account.init(WALLET_PWD, inputedPrivKey)
+                window.webapi.account.init(WALLET_PWD, inputedPrivKey)
                 window.localStorage.last_privkey = inputedPrivKey
               } catch (e) {
                 console.log(e)
@@ -148,15 +148,14 @@ export default new class View {
     btn.onclick = async () => {
       btn.disabled = true
 
-      // window.game = window.webapi.createGame({
-      //   name: manifest.slug,
-      //   gameContractAddress: manifest.getContract(this.DC_NETWORK).address,
-      //   gameLogicFunction: dapp,
-      //   rules: manifest.rules
-      // })
+      window.game = window.webapi.createGame({
+        name: manifest.slug,
+        gameContractAddress: manifest.getContract(this.DC_NETWORK).address,
+        gameLogicFunction: dapp,
+        rules: manifest.rules
+      })
       this.log = document.getElementById("log")
       window.webapi.on("webapi::status", data => {
-        console.log(data)
         this.log.style.display = "block"
         this.log.innerHTML += `<p><b>INFO</b>: ${JSON.stringify(data)}</p>`
       })
@@ -181,11 +180,8 @@ export default new class View {
       // const connection = await App.startGame(deposit)
       let connection = ""
       try {
-        await window.game.start()
-        await window.game.connect({
-          playerDeposit: deposit,
-          gameData: "0x00"
-        })
+        await window.game.start({ playerDeposit: deposit })
+        await window.game.connect({ playerDeposit: deposit })
       } catch (e) {
         this.setSpinnerStatus("none")
         this.log.innerHTML += `<p><b>ERROR</b>: ${"Can't connect, please repeat..."}</p>`
@@ -225,10 +221,13 @@ export default new class View {
         '.step-4 input[name="choice"]:checked'
       ).value
       try {
+        console.log(bet, choice)
         const result = await window.game.play({
-          userBet: bet,
-          gameData: [choice],
-          rndOpts: [[1, 3]]
+          userBets: [bet],
+          gameData: {
+            randomRanges: [[1, 3]],
+            custom: { playerNumbers: { t: "uint256", v: choice } }
+          }
         })
         this.setSpinnerStatus("none")
         let td1 = document.createElement("td")
