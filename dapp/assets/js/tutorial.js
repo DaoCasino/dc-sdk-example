@@ -2,7 +2,7 @@ import "../style/tutorial.less"
 import dapp from "../../dapp.logic.js"
 import manifest from "../../dapp.manifest.js"
 import template from "./tutorials_template.js"
-import DCWebapi from "dc-webapi"
+import DCWebapi from "@daocasino/dc-webapi"
 
 const WALLET_PWD = "1234"
 const DC_ID_PLATFORM = process.env.MACHINE_NAME || "DC_local"
