@@ -1,5 +1,5 @@
 {
-  "name": "@daocasino/dc-sdk-example",
+  "name": "dc-sdk-example",
   "private": true,
   "version": "0.2.0",
   "description": "DApp on dao casino protocol example",
@@ -20,7 +20,7 @@
     "build": "node --max-old-space-size=4096 ./scripts/build.js"
   },
   "dependencies": {
-    "@daocasino/dc-webapi": "^0.2.0",
+    "dc-webapi": "^0.2.0",
     "serviceworker-webpack-plugin": "1.0.1"
   },
   "devDependencies": {
