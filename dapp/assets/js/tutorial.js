@@ -105,6 +105,7 @@ export default new class View {
                   blockchainNetwork: that.DC_NETWORK,
                   privateKey: inputedPrivKey
                 }, async instance => {
+                  console.log(instance)
                   window.webapi = instance
                   window.game = window.webapi.game.createGame({
                     name: manifest.slug,
