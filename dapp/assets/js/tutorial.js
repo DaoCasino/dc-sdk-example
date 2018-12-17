@@ -100,12 +100,11 @@ export default new class View {
                   ? inputedPlatformId
                   : DC_ID_PLATFORM
                 const inputedPrivKey = privkey_input.value
-
                 new DCWebapi({
                   platformId: platform_id,
                   blockchainNetwork: that.DC_NETWORK,
                   privateKey: inputedPrivKey
-                }).on('ready', async instance => {
+                }, async instance => {
                   window.webapi = instance
                   window.game = window.webapi.game.createGame({
                     name: manifest.slug,
@@ -123,33 +122,8 @@ export default new class View {
                   this.root.querySelector(".step-1").classList.add("initied")
                   setTimeout(() => {
                     this.showStep2()
-                  }, 3333)
+                  }, 3000)
                 })
-
-                // webapi.ApiEvents.emit('CHANGE_DEFAULT_CONFIG', {
-                //   platformId: platform_id,
-                //   blockchainNetwork: that.DC_NETWORK,
-                //   privateKey: inputedPrivKey
-                // })
-
-                // window.webapi.start({
-                //   platformId: platform_id,
-                //   blockchainNetwork: that.DC_NETWORK,
-                //   privateKey: inputedPrivKey
-                // })
-                // window.postMessage({
-                //   action: 'CHANGE_DEFAULT_CONFIG',
-                //   data: {
-                //     platformId: platform_id,
-                //     blockchainNetwork: that.DC_NETWORK,
-                //     privateKey: inputedPrivKey
-                //   }
-                // })
-                // window.webapi.emit(window.webapi.ACTION_CHANGE_CONFIG, {
-                //   platformId: platform_id,
-                //   blockchainNetwork: that.DC_NETWORK,
-                //   privateKey: inputedPrivKey
-                // })
               } catch (e) {
                 console.log(e)
                 that.root.querySelector(".step-1 .init").style.display = "block"
