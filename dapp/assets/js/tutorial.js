@@ -100,31 +100,33 @@ export default new class View {
                   ? inputedPlatformId
                   : DC_ID_PLATFORM
                 const inputedPrivKey = privkey_input.value
-                new DCWebapi({
+                window.webapi = new DCWebapi({
                   platformId: platform_id,
                   blockchainNetwork: that.DC_NETWORK,
                   privateKey: inputedPrivKey
-                }, async instance => {
-                  console.log(instance)
-                  window.webapi = instance
-                  window.game = window.webapi.game.createGame({
-                    name: manifest.slug,
-                    gameContractAddress: manifest.getContract(this.DC_NETWORK)
-                      .address,
-                    gameLogicFunction: dapp,
-                    rules: manifest.rules
-                  })
-
-                  window.localStorage.last_privkey = inputedPrivKey
-
-                  document.getElementById("acc_info").innerHTML = JSON.stringify(
-                    window.webapi.account.getAddress()
-                  )
-                  this.root.querySelector(".step-1").classList.add("initied")
-                  setTimeout(() => {
-                    this.showStep2()
-                  }, 3000)
                 })
+
+                const { account, game } = await window.webapi.init()
+                window.account = account
+                window.game = game
+
+                window.game.createGame({
+                  name: manifest.slug,
+                  gameContractAddress: manifest.getContract(this.DC_NETWORK)
+                    .address,
+                  gameLogicFunction: dapp,
+                  rules: manifest.rules
+                })
+
+                window.localStorage.last_privkey = inputedPrivKey
+
+                document.getElementById("acc_info").innerHTML = JSON.stringify(
+                  window.account.getAddress()
+                )
+                this.root.querySelector(".step-1").classList.add("initied")
+                setTimeout(() => {
+                  this.showStep2()
+                }, 3000)
               } catch (e) {
                 console.log(e)
                 that.root.querySelector(".step-1 .init").style.display = "block"
@@ -171,7 +173,7 @@ export default new class View {
       let connection = ""
       try {
         // await window.game.start({ playerDeposit: deposit })
-        await window.webapi.game.connect({ playerDeposit: deposit })
+        await window.game.connect({ playerDeposit: deposit })
       } catch (e) {
         this.setSpinnerStatus("none")
         this.log.innerHTML += `<p><b>ERROR</b>: ${"Can't connect, please repeat..."}</p>`
@@ -212,7 +214,7 @@ export default new class View {
       ).value
       try {
         console.log(bet, choice)
-        const result = await window.webapi.game.play({
+        const result = await window.game.play({
           userBets: [bet],
           gameData: {
             randomRanges: [[1, 3]],
@@ -290,7 +292,7 @@ export default new class View {
     btn.disabled = true
     this.root.querySelector(".step-5 .close-block").style.display = "none"
     try {
-      await window.webapi.game.disconnect()
+      await window.game.disconnect()
     } catch (e) {
       this.setSpinnerStatus("none")
       this.log.innerHTML += `<p><b>ERROR</b>: ${"disconnect: error"}</p>`
