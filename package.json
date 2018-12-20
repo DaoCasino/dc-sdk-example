@@ -20,8 +20,7 @@
     "build": "node --max-old-space-size=4096 ./scripts/build.js"
   },
   "dependencies": {
-    "@daocasino/dc-webapi": "^0.2.3",
-    "serviceworker-webpack-plugin": "1.0.1"
+    "@daocasino/dc-webapi": "^0.2.3"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
