@@ -39,14 +39,14 @@ const template = `<div id="tutorial_app" class="show-step-0">
           </li>
         </ul>
         <div>
-          <h2><strong>First of all install and import "dc-webapi" library with the game logic and game metadata </strong></h2>
-          <br/><code>npm install dc-webapi</code>
+          <h2><strong>First of all install and import "@daocasino/dc-webapi" library with the game logic and game metadata </strong></h2>
+          <br/><code>npm install @daocasino/dc-webapi</code>
           <br/>
             <pre>
 
             import { dapp } from "../../dapp.logic.js"
             import manifest from "../../dapp.manifest.js"
-            import DCWebapi from 'dc-webapi'
+            import DCWebapi from '@daocasino/dc-webapi'
             </pre>
           </div>
       </p>
@@ -95,7 +95,7 @@ const template = `<div id="tutorial_app" class="show-step-0">
 
     <!-- init Dapp -->
     <div class="step step-2">
-    <h2>Init dc-webapi</h2>
+    <h2>Init webapi</h2>
     <p>Code Example
     <pre>
 

@@ -8,7 +8,6 @@ const HtmlWebpackPlugin     = require('html-webpack-plugin')
 const ExtractTextPlugin     = require('extract-text-webpack-plugin')
 const ManifestPlugin        = require('webpack-manifest-plugin')
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin')
-const SWPlugin              = require('serviceworker-webpack-plugin')
 const eslintFormatter       = require('react-dev-utils/eslintFormatter')
 const ModuleScopePlugin     = require('react-dev-utils/ModuleScopePlugin')
 
@@ -123,7 +122,7 @@ let front_prod_config = {
       // We are waiting for https://github.com/facebookincubator/create-react-app/issues/2176.
       { parser: { requireEnsure: false } },
 
-    
+
 
       // ** ADDING/UPDATING LOADERS **
       // The "file" loader handles all assets unless explicitly excluded.
@@ -299,6 +298,12 @@ let front_prod_config = {
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
     new ExtractTextPlugin({
       filename: cssFilename
+    }),
+
+    new webpack.DefinePlugin({
+      "process.env": {
+        CUSTOM_WEB3_PROVIDER_URL: '"https://testrpc.test.dao.casino/thatiskindatoken"'
+      }
     }),
 
     // Generate a manifest file which contains a mapping of all asset filenames

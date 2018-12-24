@@ -2,7 +2,7 @@ import "../style/tutorial.less"
 import dapp from "../../dapp.logic.js"
 import manifest from "../../dapp.manifest.js"
 import template from "./tutorials_template.js"
-import DCWebapi from "dc-webapi"
+import DCWebapi from "@daocasino/dc-webapi"
 
 const WALLET_PWD = "1234"
 const DC_ID_PLATFORM = process.env.MACHINE_NAME || "DC_local"
@@ -100,26 +100,33 @@ export default new class View {
                   ? inputedPlatformId
                   : DC_ID_PLATFORM
                 const inputedPrivKey = privkey_input.value
-
-                window.webapi = await new DCWebapi({
+                window.webapi = new DCWebapi({
                   platformId: platform_id,
-                  blockchainNetwork: that.DC_NETWORK
+                  blockchainNetwork: that.DC_NETWORK,
+                  privateKey: inputedPrivKey
                 })
 
-                // window.webapi.on(window.webapi.ACTION_GAME_READY, () => {
-                //   window.game = window.webapi.createGame({
-                //     name: manifest.slug,
-                //     gameContractAddress: manifest.getContract(this.DC_NETWORK)
-                //       .address,
-                //     gameLogicFunction: dapp,
-                //     rules: manifest.rules
-                //   })
-                // })
+                const { account, game } = await window.webapi.init()
+                window.account = account
+                window.game = game
 
-                await window.webapi.start()
+                window.game.createGame({
+                  name: manifest.slug,
+                  gameContractAddress: manifest.getContract(this.DC_NETWORK)
+                    .address,
+                  gameLogicFunction: dapp,
+                  rules: manifest.rules
+                })
 
-                window.webapi.account.init(WALLET_PWD, inputedPrivKey)
                 window.localStorage.last_privkey = inputedPrivKey
+
+                document.getElementById("acc_info").innerHTML = JSON.stringify(
+                  window.account.getAddress()
+                )
+                this.root.querySelector(".step-1").classList.add("initied")
+                setTimeout(() => {
+                  this.showStep2()
+                }, 3000)
               } catch (e) {
                 console.log(e)
                 that.root.querySelector(".step-1 .init").style.display = "block"
@@ -128,14 +135,6 @@ export default new class View {
                   playerPrivateKeys[that.DC_NETWORK]
                 return
               }
-
-              document.getElementById("acc_info").innerHTML = JSON.stringify(
-                window.webapi.account.address
-              )
-              this.root.querySelector(".step-1").classList.add("initied")
-              setTimeout(() => {
-                this.showStep2()
-              }, 3333)
             }, 33)
           }
         }
@@ -147,13 +146,6 @@ export default new class View {
     const btn = this.root.querySelector(".step-2 button")
     btn.onclick = async () => {
       btn.disabled = true
-
-      window.game = window.webapi.createGame({
-        name: manifest.slug,
-        gameContractAddress: manifest.getContract(this.DC_NETWORK).address,
-        gameLogicFunction: dapp,
-        rules: manifest.rules
-      })
       this.log = document.getElementById("log")
       window.webapi.on("webapi::status", data => {
         this.log.style.display = "block"
@@ -180,7 +172,7 @@ export default new class View {
       // const connection = await App.startGame(deposit)
       let connection = ""
       try {
-        await window.game.start({ playerDeposit: deposit })
+        // await window.game.start({ playerDeposit: deposit })
         await window.game.connect({ playerDeposit: deposit })
       } catch (e) {
         this.setSpinnerStatus("none")
