@@ -220,8 +220,7 @@ let front_dev_config = {
     new CaseSensitivePathsPlugin(),
     new webpack.DefinePlugin({
       "process.env": {
-        MACHINE_NAME: `"${os.hostname()}"`,
-        CUSTOM_WEB3_PROVIDER_URL: '"https://testrpc.test.dao.casino/thatiskindatoken"'
+        MACHINE_NAME: `"${os.hostname()}"`
       }
     }),
     // If you require a missing module and then `npm install` it, you still have
