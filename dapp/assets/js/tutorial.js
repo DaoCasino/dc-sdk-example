@@ -212,6 +212,7 @@ export default new class View {
       const choice = +document.querySelector(
         '.step-4 input[name="choice"]:checked'
       ).value
+
       try {
         console.log(bet, choice)
         const result = await window.game.play({
@@ -221,6 +222,7 @@ export default new class View {
             custom: { playerNumbers: { t: "uint256", v: choice } }
           }
         })
+
         this.setSpinnerStatus("none")
         let td1 = document.createElement("td")
         let td2 = document.createElement("td")
@@ -236,38 +238,23 @@ export default new class View {
 
         td3.innerHTML = 0
 
-        tr.appendChild(td1)
-        tr.appendChild(td2)
-        tr.appendChild(td3)
-        tr.appendChild(td4)
-        tr.appendChild(td5)
-        tr.appendChild(td6)
+        tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3)
+        tr.appendChild(td4); tr.appendChild(td5); tr.appendChild(td6)
 
-        for (let i in result) {
-          switch (i) {
-            case "balances":
-              td6.innerHTML = `player ${result[i].player}
-                               bankroller ${result[i].bankroller}`
-              break
-            case "params":
-              td1.innerHTML = result[i].userBet
-              td2.innerHTML = result[i].gameData[0]
-              break
-            case "profit":
-              td5.innerHTML = result[i]
-              break
-            case "randomNums":
-              td4.innerHTML = result[i][0]
-              break
-          }
-        }
-        // console.log(result)
+
+        td6.innerHTML = `player ${result.balances.player}
+                         bankroller ${result.balances.bankroller}`
+        td1.innerHTML = result.params.userBets[0]
+        td2.innerHTML = result.params.gameData.custom.playerNumbers.v
+        td5.innerHTML = result.profit
+        td4.innerHTML = result.randomNums[0]
+        
+        console.info("Play result:", result)
       } catch (e) {
         this.setSpinnerStatus("none")
         this.log.innerHTML += `<p><b>ERROR</b>: ${JSON.stringify(e)}</p>`
         console.error(e)
       }
-      console.info("Play result:")
 
       endBtn.disabled = false
       if (playCnt++ > 3) {

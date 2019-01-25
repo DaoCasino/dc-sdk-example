@@ -1,7 +1,7 @@
 module.exports = function() {
   return {
     play: function(userBets, gameData, randoms) {
-      const userNum = gameData.custom.playerNumbers
+      const userNum = gameData.custom.playerNumbers.v
       const randomNum = randoms[0]
 
       let profit = -userBets[0]
@@ -10,6 +10,8 @@ module.exports = function() {
       if (userNum * 1 === randomNum * 1) {
         profit = userBets[0] * 2
       }
+
+
 
       // return player profit
       return { profit }
